@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "features": "المميزات",
+    "pricing": "الأسعار",
+    "about": "حول",
+    "contact": "اتصل بنا",
+    "login": "تسجيل الدخول",
+    "signup": "إنشاء حساب"
+  },
+  "hero": {
+    "title": "التعلم بالذكاء الاصطناعي لكل طفل",
+    "subtitle": "تساعد منصة 3allamni الأطفال على تحسين مهارات الكتابة والقراءة من خلال التعليقات المخصصة بالذكاء الاصطناعي وتجارب التعلم التفاعلية.",
+    "cta": "ابدأ مجاناً",
+    "cta_secondary": "شاهد العرض التوضيحي"
+  },
+  "features": {
+    "title": "كل ما تحتاجه للتعلم الفعال",
+    "subtitle": "أدوات قوية للطلاب والمعلمين",
+    "student_title": "للطلاب",
+    "student_subtitle": "تجربة تعلم تفاعلية",
+    "teacher_title": "للمعلمين",
+    "teacher_subtitle": "مساحة عمل مهنية",
+    "ai_feedback": {
+      "title": "تعليقات الذكاء الاصطناعي",
+      "description": "احصل على تعليقات فورية ومخصصة على تمارين الكتابة والقراءة"
+    },
+    "gamification": {
+      "title": "التعلم التفاعلي",
+      "description": "اكسب الشارات والنجوم وافتح الإنجازات أثناء تقدمك"
+    },
+    "progress_tracking": {
+      "title": "تتبع التقدم",
+      "description": "راقب تقدم الطلاب بتحليلات وتقارير مفصلة"
+    },
+    "multilingual": {
+      "title": "دعم متعدد اللغات",
+      "description": "متوفر بالعربية والإنجليزية والفرنسية مع دعم الكتابة من اليمين لليسار"
+    },
+    "safe_environment": {
+      "title": "بيئة آمنة للأطفال",
+      "description": "منصة آمنة ومراقبة مصممة خصيصاً للأطفال"
+    },
+    "teacher_tools": {
+      "title": "أدوات المعلم",
+      "description": "أدوات شاملة لإدارة الفصول الدراسية وإنشاء الواجبات"
+    }
+  },
+  "pricing": {
+    "title": "أسعار بسيطة وشفافة",
+    "subtitle": "اختر الخطة المناسبة لك",
+    "student": {
+      "title": "للطلاب",
+      "price": "مجاني",
+      "description": "مثالي للمتعلمين الأفراد",
+      "features": [
+        "تعليقات الكتابة بالذكاء الاصطناعي",
+        "تجربة تعلم تفاعلية",
+        "تتبع التقدم",
+        "تمارين أساسية",
+        "وصول لوحة تحكم الوالدين"
+      ],
+      "cta": "ابدأ التعلم"
+    },
+    "teacher": {
+      "title": "للمعلمين",
+      "price": "189 درهم",
+      "period": "/شهر",
+      "description": "حل شامل لإدارة الفصول الدراسية",
+      "features": [
+        "كل ما في خطة الطلاب",
+        "إدارة الفصول الدراسية",
+        "إنشاء الواجبات",
+        "تحليلات تقدم الطلاب",
+        "إدارة الطلاب بالجملة",
+        "دعم أولوية"
+      ],
+      "cta": "ابدأ التدريس"
+    }
+  },
+  "footer": {
+    "about": "حول",
+    "contact": "اتصل بنا",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة",
+    "description": "3allamni هي منصة مدرس ذكي آمنة للأطفال تساعد الأطفال على تحسين مهارات الكتابة والقراءة من خلال التعليقات المخصصة والتعلم التفاعلي."
+  },
+  "auth": {
+    "login_title": "مرحباً بعودتك",
+    "signup_title": "إنشاء حسابك",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirm_password": "تأكيد كلمة المرور",
+    "name": "الاسم الكامل",
+    "role": "أنا",
+    "student": "طالب",
+    "teacher": "معلم",
+    "login_button": "تسجيل الدخول",
+    "signup_button": "إنشاء حساب",
+    "forgot_password": "نسيت كلمة المرور؟",
+    "no_account": "ليس لديك حساب؟",
+    "have_account": "لديك حساب بالفعل؟",
+    "switch_to_signup": "إنشاء حساب",
+    "switch_to_login": "تسجيل الدخول"
+  },
+  "student": {
+    "dashboard": "لوحة التحكم",
+    "writeAndFix": "اكتب وصحح",
+    "dictationAndReading": "الإملاء والقراءة",
+    "miniQuests": "المهام الصغيرة",
+    "assignments": "الواجبات",
+    "statistics": "الإحصائيات",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج",
+    "welcomeBack": "مرحباً بعودتك",
+    "readyForAdventure": "هل أنت مستعد لمغامرة التعلم؟",
+    "chooseActivityToStart": "اختر نشاطاً لبدء التعلم!",
+    "totalPoints": "إجمالي النقاط",
+    "currentLevel": "المستوى",
+    "dayStreak": "أيام متتالية",
+    "badgesEarned": "الشارات",
+    "recentAchievements": "الإنجازات الأخيرة",
+    "yourAssignments": "واجباتك",
+    "completed": "مكتملة",
+    "pending": "في الانتظار",
+    "assignmentsCompleted": "واجبات مكتملة!",
+    "assignmentsPending": "واجبات للإنجاز",
+    "viewAllAssignments": "عرض جميع الواجبات",
+    "startNow": "ابدأ الآن",
+    "uploadImageAndGetFeedback": "ارفع كتابتك واحصل على تعليقات فورية!",
+    "practiceListeningAndSpeaking": "تدرب على مهارات الاستماع والتحدث",
+    "completeShortLearningChallenges": "أكمل تحديات التعلم الممتعة",
+    "viewAndCompleteAssignments": "اعرض وأكمل واجباتك المدرسية",
+    "accessibilitySettings": "إعدادات إمكانية الوصول",
+    "dyslexiaFriendlyFont": "خط مناسب لعسر القراءة",
+    "readingSpeed": "سرعة القراءة",
+    "highContrast": "تباين عالي",
+    "languageSettings": "إعدادات اللغة",
+    "selectLanguage": "اختر اللغة",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح!",
+    "tryAgain": "حاول مرة أخرى",
+    "greatJob": "عمل رائع!",
+    "keepGoing": "استمر!",
+    "almostThere": "تقريباً وصلت!",
+    "excellent": "ممتاز!",
+    "wellDone": "أحسنت!",
+    "uploadImage": "رفع صورة",
+    "analyzeText": "تحليل النص",
+    "extractedText": "النص المستخرج",
+    "correctedText": "النص المصحح",
+    "errorsFound": "الأخطاء الموجودة",
+    "miniLesson": "درس صغير",
+    "questsAvailable": "المهام المتاحة",
+    "questCompleted": "تم إنجاز المهمة!",
+    "earnedPoints": "لقد حصلت على",
+    "points": "نقاط",
+    "nextQuest": "المهمة التالية",
+    "slow": "بطيء",
+    "normal": "عادي",
+    "fast": "سريع",
+    "on": "مفعل",
+    "off": "معطل"
+  }
+}

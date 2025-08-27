@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "features": "Fonctionnalités",
+    "pricing": "Tarifs",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "signup": "S'inscrire"
+  },
+  "hero": {
+    "title": "Apprentissage IA pour Chaque Enfant",
+    "subtitle": "3allamni aide les enfants à améliorer leurs compétences en écriture et lecture avec des commentaires IA personnalisés et des expériences d'apprentissage gamifiées.",
+    "cta": "Commencer Gratuitement",
+    "cta_secondary": "Voir la Démo"
+  },
+  "features": {
+    "title": "Tout ce dont vous avez besoin pour un apprentissage efficace",
+    "subtitle": "Des outils puissants pour les étudiants et les enseignants",
+    "student_title": "Pour les Étudiants",
+    "student_subtitle": "Expérience d'apprentissage gamifiée",
+    "teacher_title": "Pour les Enseignants",
+    "teacher_subtitle": "Espace de travail professionnel",
+    "ai_feedback": {
+      "title": "Commentaires IA",
+      "description": "Obtenez des commentaires instantanés et personnalisés sur les exercices d'écriture et de lecture"
+    },
+    "gamification": {
+      "title": "Apprentissage Gamifié",
+      "description": "Gagnez des badges, des étoiles et débloquez des réalisations en progressant"
+    },
+    "progress_tracking": {
+      "title": "Suivi des Progrès",
+      "description": "Surveillez les progrès des étudiants avec des analyses et rapports détaillés"
+    },
+    "multilingual": {
+      "title": "Support Multilingue",
+      "description": "Disponible en arabe, anglais et français avec support RTL"
+    },
+    "safe_environment": {
+      "title": "Environnement Sûr pour Enfants",
+      "description": "Plateforme sécurisée et surveillée conçue spécifiquement pour les enfants"
+    },
+    "teacher_tools": {
+      "title": "Outils Enseignant",
+      "description": "Outils complets de gestion de classe et de création d'exercices"
+    }
+  },
+  "pricing": {
+    "title": "Tarification simple et transparente",
+    "subtitle": "Choisissez le plan qui vous convient",
+    "student": {
+      "title": "Pour les Étudiants",
+      "price": "Gratuit",
+      "description": "Parfait pour les apprenants individuels",
+      "features": [
+        "Commentaires d'écriture IA",
+        "Expérience d'apprentissage gamifiée",
+        "Suivi des progrès",
+        "Exercices de base",
+        "Accès tableau de bord parent"
+      ],
+      "cta": "Commencer l'Apprentissage"
+    },
+    "teacher": {
+      "title": "Pour les Enseignants",
+      "price": "189 MAD",
+      "period": "/mois",
+      "description": "Solution complète de gestion de classe",
+      "features": [
+        "Tout dans le plan Étudiant",
+        "Gestion de classe",
+        "Création d'exercices",
+        "Analyses de progrès étudiant",
+        "Gestion d'étudiants en masse",
+        "Support prioritaire"
+      ],
+      "cta": "Commencer l'Enseignement"
+    }
+  },
+  "footer": {
+    "about": "À propos",
+    "contact": "Contact",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'Utilisation",
+    "description": "3allamni est une plateforme de tuteur IA sûre pour enfants aidant les enfants à améliorer leurs compétences en écriture et lecture grâce à des commentaires personnalisés et un apprentissage gamifié."
+  },
+  "auth": {
+    "login_title": "Bon retour",
+    "signup_title": "Créez votre compte",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+    "name": "Nom complet",
+    "role": "Je suis un",
+    "student": "Étudiant",
+    "teacher": "Enseignant",
+    "login_button": "Se connecter",
+    "signup_button": "Créer un compte",
+    "forgot_password": "Mot de passe oublié ?",
+    "no_account": "Pas de compte ?",
+    "have_account": "Déjà un compte ?",
+    "switch_to_signup": "S'inscrire",
+    "switch_to_login": "Se connecter"
+  },
+  "student": {
+    "dashboard": "Tableau de bord",
+    "writeAndFix": "Écrire & Corriger",
+    "dictationAndReading": "Dictée & Lecture",
+    "miniQuests": "Mini-Quêtes",
+    "assignments": "Devoirs",
+    "statistics": "Statistiques",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "welcomeBack": "Bon retour",
+    "readyForAdventure": "Prêt pour ton aventure d'apprentissage ?",
+    "chooseActivityToStart": "Choisis une activité pour commencer à apprendre !",
+    "totalPoints": "Points Totaux",
+    "currentLevel": "Niveau",
+    "dayStreak": "Série de Jours",
+    "badgesEarned": "Badges",
+    "recentAchievements": "Réussites Récentes",
+    "yourAssignments": "Tes Devoirs",
+    "completed": "Terminés",
+    "pending": "En Attente",
+    "assignmentsCompleted": "devoirs terminés !",
+    "assignmentsPending": "devoirs à faire",
+    "viewAllAssignments": "Voir Tous les Devoirs",
+    "startNow": "Commencer",
+    "uploadImageAndGetFeedback": "Télécharge ton écriture et reçois des commentaires instantanés !",
+    "practiceListeningAndSpeaking": "Pratique l'écoute et l'expression orale",
+    "completeShortLearningChallenges": "Complète des défis d'apprentissage amusants",
+    "viewAndCompleteAssignments": "Consulte et termine tes devoirs scolaires",
+    "accessibilitySettings": "Paramètres d'Accessibilité",
+    "dyslexiaFriendlyFont": "Police adaptée à la dyslexie",
+    "readingSpeed": "Vitesse de Lecture",
+    "highContrast": "Contraste Élevé",
+    "languageSettings": "Paramètres de Langue",
+    "selectLanguage": "Sélectionner la Langue",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès !",
+    "tryAgain": "Réessayer",
+    "greatJob": "Excellent travail !",
+    "keepGoing": "Continue !",
+    "almostThere": "Presque !",
+    "excellent": "Excellent !",
+    "wellDone": "Bien joué !",
+    "uploadImage": "Télécharger Image",
+    "analyzeText": "Analyser Mon Texte",
+    "extractedText": "Texte Extrait",
+    "correctedText": "Texte Corrigé",
+    "errorsFound": "Erreurs Trouvées",
+    "miniLesson": "Mini Leçon",
+    "questsAvailable": "Quêtes Disponibles",
+    "questCompleted": "Quête Terminée !",
+    "earnedPoints": "Tu as gagné",
+    "points": "points",
+    "nextQuest": "Prochaine Quête",
+    "slow": "Lent",
+    "normal": "Normal",
+    "fast": "Rapide",
+    "on": "Activé",
+    "off": "Désactivé"
+  }
+}

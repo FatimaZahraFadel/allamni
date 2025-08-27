@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "signup": "Sign Up"
+  },
+  "hero": {
+    "title": "AI-Powered Learning for Every Child",
+    "subtitle": "3allamni helps children improve their writing and reading skills with personalized AI feedback and gamified learning experiences.",
+    "cta": "Get Started Free",
+    "cta_secondary": "Watch Demo"
+  },
+  "features": {
+    "title": "Everything you need for effective learning",
+    "subtitle": "Powerful tools for both students and teachers",
+    "student_title": "For Students",
+    "student_subtitle": "Gamified learning experience",
+    "teacher_title": "For Teachers",
+    "teacher_subtitle": "Professional workspace",
+    "ai_feedback": {
+      "title": "AI-Powered Feedback",
+      "description": "Get instant, personalized feedback on writing and reading exercises"
+    },
+    "gamification": {
+      "title": "Gamified Learning",
+      "description": "Earn badges, stars, and unlock achievements as you progress"
+    },
+    "progress_tracking": {
+      "title": "Progress Tracking",
+      "description": "Monitor student progress with detailed analytics and reports"
+    },
+    "multilingual": {
+      "title": "Multilingual Support",
+      "description": "Available in Arabic, English, and French with RTL support"
+    },
+    "safe_environment": {
+      "title": "Kid-Safe Environment",
+      "description": "Secure, monitored platform designed specifically for children"
+    },
+    "teacher_tools": {
+      "title": "Teacher Tools",
+      "description": "Comprehensive classroom management and assignment creation tools"
+    }
+  },
+  "pricing": {
+    "title": "Simple, transparent pricing",
+    "subtitle": "Choose the plan that's right for you",
+    "student": {
+      "title": "For Students",
+      "price": "Free",
+      "description": "Perfect for individual learners",
+      "features": [
+        "AI-powered writing feedback",
+        "Gamified learning experience",
+        "Progress tracking",
+        "Basic exercises",
+        "Parent dashboard access"
+      ],
+      "cta": "Start Learning"
+    },
+    "teacher": {
+      "title": "For Teachers",
+      "price": "189 MAD",
+      "period": "/month",
+      "description": "Complete classroom management solution",
+      "features": [
+        "Everything in Student plan",
+        "Classroom management",
+        "Assignment creation",
+        "Student progress analytics",
+        "Bulk student management",
+        "Priority support"
+      ],
+      "cta": "Start Teaching"
+    }
+  },
+  "footer": {
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "description": "3allamni is a kid-safe AI tutor platform helping children improve their writing and reading skills through personalized feedback and gamified learning."
+  },
+  "auth": {
+    "login_title": "Welcome back",
+    "signup_title": "Create your account",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "name": "Full Name",
+    "role": "I am a",
+    "student": "Student",
+    "teacher": "Teacher",
+    "login_button": "Sign In",
+    "signup_button": "Create Account",
+    "forgot_password": "Forgot password?",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "switch_to_signup": "Sign up",
+    "switch_to_login": "Sign in"
+  },
+  "student": {
+    "dashboard": "Dashboard",
+    "writeAndFix": "Write & Fix",
+    "dictationAndReading": "Dictation & Reading",
+    "miniQuests": "Mini Quests",
+    "assignments": "Assignments",
+    "statistics": "Statistics",
+    "settings": "Settings",
+    "logout": "Logout",
+    "welcomeBack": "Welcome back",
+    "readyForAdventure": "Ready for your learning adventure?",
+    "chooseActivityToStart": "Choose an activity to start learning!",
+    "totalPoints": "Total Points",
+    "currentLevel": "Level",
+    "dayStreak": "Day Streak",
+    "badgesEarned": "Badges",
+    "recentAchievements": "Recent Achievements",
+    "yourAssignments": "Your Assignments",
+    "completed": "Completed",
+    "pending": "Pending",
+    "assignmentsCompleted": "assignments done!",
+    "assignmentsPending": "assignments to do",
+    "viewAllAssignments": "View All Assignments",
+    "startNow": "Start Now",
+    "uploadImageAndGetFeedback": "Upload your handwriting and get instant feedback!",
+    "practiceListeningAndSpeaking": "Practice listening and speaking skills",
+    "completeShortLearningChallenges": "Complete fun learning challenges",
+    "viewAndCompleteAssignments": "View and complete your school assignments",
+    "accessibilitySettings": "Accessibility Settings",
+    "dyslexiaFriendlyFont": "Dyslexia-friendly font",
+    "readingSpeed": "Reading Speed",
+    "highContrast": "High Contrast",
+    "languageSettings": "Language Settings",
+    "selectLanguage": "Select Language",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success!",
+    "tryAgain": "Try Again",
+    "greatJob": "Great job!",
+    "keepGoing": "Keep going!",
+    "almostThere": "Almost there!",
+    "excellent": "Excellent!",
+    "wellDone": "Well done!",
+    "uploadImage": "Upload Image",
+    "analyzeText": "Analyze My Text",
+    "extractedText": "Extracted Text",
+    "correctedText": "Corrected Text",
+    "errorsFound": "Errors Found",
+    "miniLesson": "Mini Lesson",
+    "questsAvailable": "Quests Available",
+    "questCompleted": "Quest Completed!",
+    "earnedPoints": "You earned",
+    "points": "points",
+    "nextQuest": "Next Quest",
+    "slow": "Slow",
+    "normal": "Normal",
+    "fast": "Fast",
+    "on": "On",
+    "off": "Off"
+  }
+}
