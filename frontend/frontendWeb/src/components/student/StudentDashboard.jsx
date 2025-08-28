@@ -51,9 +51,7 @@ export default function StudentDashboard() {
         };
         setDashboardData(mockData);
         
-        // Show confetti animation on load
-        setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 3000);
+        // Removed confetti animation on load for better UX
       } catch (err) {
         console.error('Failed to fetch dashboard data:', err);
       } finally {
@@ -117,22 +115,7 @@ export default function StudentDashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Confetti Animation */}
-      {showConfetti && (
-        <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-          {/* Top row */}
-          <div className="absolute top-[8%] left-[20%] text-3xl animate-bounce opacity-90">🎉</div>
-          <div className="absolute top-[12%] right-[25%] text-3xl animate-bounce delay-200 opacity-80">⭐</div>
 
-          {/* Middle row */}
-          <div className="absolute top-[20%] left-[15%] text-2xl animate-bounce delay-300 opacity-75">🌟</div>
-          <div className="absolute top-[18%] right-[20%] text-2xl animate-bounce delay-500 opacity-70">✨</div>
-
-          {/* Bottom scattered */}
-          <div className="absolute top-[28%] left-[35%] text-2xl animate-bounce delay-700 opacity-60">🎊</div>
-          <div className="absolute top-[25%] right-[40%] text-2xl animate-bounce delay-900 opacity-65">💫</div>
-        </div>
-      )}
 
       {/* Welcome Header */}
       <div className="text-center">

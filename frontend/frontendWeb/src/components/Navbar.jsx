@@ -51,31 +51,32 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-2">
+            <div className="hidden lg:flex items-center space-x-1">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-gray-700 hover:text-gray-900 font-medium px-4 py-2 rounded-xl hover:bg-white/20 transition-all duration-300 backdrop-blur-sm"
+                  className="text-gray-700 hover:text-blue-600 font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:bg-blue-50/50 relative group"
                 >
                   {item.name}
+                  <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
                 </Link>
               ))}
             </div>
 
             {/* Right side - Auth buttons and Language switcher */}
-            <div className="hidden md:flex items-center space-x-3">
+            <div className="hidden md:flex items-center space-x-4">
               <LanguageSwitcher />
               {isAuthenticated ? (
                 <div className="flex items-center space-x-3">
-                  <div className="flex items-center space-x-2 glass-button px-4 py-2 rounded-xl">
-                    <UserIcon className="h-5 w-5 text-gray-700" />
-                    <span className="font-medium text-gray-700">{user?.name}</span>
+                  <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-sm">
+                    <UserIcon className="h-5 w-5 text-gray-600" />
+                    <span className="font-medium text-gray-800">{user?.name}</span>
                     <span className="text-sm text-gray-500 capitalize">({user?.role})</span>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="glass-button text-gray-700 hover:text-gray-900 px-4 py-2 rounded-xl font-medium transition-all duration-300"
+                    className="text-gray-600 hover:text-red-600 px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:bg-red-50/50"
                   >
                     Logout
                   </button>
@@ -84,13 +85,13 @@ export default function Navbar() {
                 <>
                   <button
                     onClick={() => openAuthModal('login')}
-                    className="glass-button text-gray-700 hover:text-gray-900 px-4 py-2 rounded-xl font-medium transition-all duration-300"
+                    className="text-gray-700 hover:text-blue-600 px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:bg-blue-50/50"
                   >
                     {t('nav.login')}
                   </button>
                   <button
                     onClick={() => openAuthModal('signup')}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-xl font-bold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg glow"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-full font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
                     {t('nav.signup')}
                   </button>
@@ -99,11 +100,11 @@ export default function Navbar() {
             </div>
 
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-2">
+            <div className="lg:hidden flex items-center space-x-3">
               <LanguageSwitcher />
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-600 hover:text-gray-900 p-2"
+                className="text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100/50 transition-all duration-300"
               >
                 {isMenuOpen ? (
                   <XMarkIcon className="h-6 w-6" />
@@ -116,31 +117,33 @@ export default function Navbar() {
 
           {/* Mobile menu */}
           {isMenuOpen && (
-            <div className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
+            <div className="lg:hidden">
+              <div className="px-4 pt-4 pb-6 space-y-3 bg-white/95 backdrop-blur-md border-t border-gray-200/50 shadow-lg">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className="block px-3 py-2 text-gray-600 hover:text-gray-900 font-medium"
+                    className="block px-4 py-3 text-gray-700 hover:text-blue-600 font-medium rounded-lg hover:bg-blue-50/50 transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
                   </Link>
                 ))}
-                <div className="pt-4 space-y-2">
+                <div className="pt-4 border-t border-gray-200/50 space-y-3">
                   {isAuthenticated ? (
                     <>
-                      <div className="px-3 py-2 text-gray-700">
-                        <div className="flex items-center space-x-2">
-                          <UserIcon className="h-5 w-5" />
-                          <span className="font-medium">{user?.name}</span>
+                      <div className="px-4 py-3 bg-gray-50/50 rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <UserIcon className="h-5 w-5 text-gray-600" />
+                          <div>
+                            <span className="font-medium text-gray-800 block">{user?.name}</span>
+                            <span className="text-sm text-gray-500 capitalize">({user?.role})</span>
+                          </div>
                         </div>
-                        <span className="text-sm text-gray-500 capitalize">({user?.role})</span>
                       </div>
                       <button
                         onClick={handleLogout}
-                        className="block w-full text-left px-3 py-2 text-gray-600 hover:text-gray-900 font-medium"
+                        className="block w-full text-left px-4 py-3 text-red-600 hover:text-red-700 font-medium rounded-lg hover:bg-red-50/50 transition-all duration-300"
                       >
                         Logout
                       </button>
@@ -152,7 +155,7 @@ export default function Navbar() {
                           openAuthModal('login');
                           setIsMenuOpen(false);
                         }}
-                        className="block w-full text-left px-3 py-2 text-gray-600 hover:text-gray-900 font-medium"
+                        className="block w-full text-left px-4 py-3 text-gray-700 hover:text-blue-600 font-medium rounded-lg hover:bg-blue-50/50 transition-all duration-300"
                       >
                         {t('nav.login')}
                       </button>
@@ -161,7 +164,7 @@ export default function Navbar() {
                           openAuthModal('signup');
                           setIsMenuOpen(false);
                         }}
-                        className="block w-full btn-primary"
+                        className="block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md"
                       >
                         {t('nav.signup')}
                       </button>

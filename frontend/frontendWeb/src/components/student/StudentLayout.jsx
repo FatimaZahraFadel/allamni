@@ -135,7 +135,7 @@ export default function StudentLayout({ children }) {
                   >
                     <span className="text-2xl">{item.emoji}</span>
                     <span className="flex-1">{item.name}</span>
-                    {item.current && <StarIcon className="h-6 w-6 text-yellow-500 animate-pulse" />}
+                    {item.current && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
                   </Link>
                 </li>
               ))}
@@ -229,10 +229,7 @@ export default function StudentLayout({ children }) {
                         <span className="text-3xl">{item.emoji}</span>
                         <span className="flex-1">{item.name}</span>
                         {item.current && (
-                          <div className="flex items-center space-x-1">
-                            <StarIcon className="h-6 w-6 text-yellow-500 animate-pulse" />
-                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping"></div>
-                          </div>
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                         )}
                       </Link>
                     </li>

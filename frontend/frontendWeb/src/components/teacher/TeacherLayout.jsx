@@ -110,10 +110,12 @@ export default function TeacherLayout({ children }) {
 
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
-          <div className="flex h-16 shrink-0 items-center">
-            <h1 className="text-2xl font-bold gradient-text">3allamni</h1>
-            <span className="ml-2 text-sm text-gray-500">Teacher</span>
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gradient-to-b from-blue-50 via-purple-50 to-indigo-50 border-r border-blue-200 px-6 shadow-xl">
+          <div className="flex h-16 shrink-0 items-center justify-center">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">3allamni</h1>
+              <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Teacher Portal</span>
+            </div>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -125,15 +127,15 @@ export default function TeacherLayout({ children }) {
                         to={item.href}
                         className={classNames(
                           item.current
-                            ? 'bg-primary-50 text-primary-600'
-                            : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50',
-                          'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors duration-200'
+                            ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg transform scale-105'
+                            : 'text-gray-700 hover:text-white hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:shadow-md hover:transform hover:scale-102',
+                          'group flex gap-x-3 rounded-xl p-3 text-sm leading-6 font-semibold transition-all duration-300 mx-1 my-1'
                         )}
                       >
                         <item.icon
                           className={classNames(
-                            item.current ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-600',
-                            'h-6 w-6 shrink-0'
+                            item.current ? 'text-white' : 'text-gray-500 group-hover:text-white',
+                            'h-5 w-5 shrink-0'
                           )}
                         />
                         {item.name}
@@ -143,23 +145,25 @@ export default function TeacherLayout({ children }) {
                 </ul>
               </li>
               <li className="-mx-6 mt-auto">
-                <div className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 border-t border-gray-200">
-                  <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
-                    <span className="text-primary-600 font-medium">
-                      {user?.name?.charAt(0)?.toUpperCase()}
-                    </span>
+                <div className="bg-gradient-to-r from-blue-600 to-purple-600 mx-4 mb-4 rounded-2xl p-4 shadow-lg">
+                  <div className="flex items-center gap-x-3">
+                    <div className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center ring-2 ring-white/30">
+                      <span className="text-white font-bold text-lg">
+                        {user?.name?.charAt(0)?.toUpperCase()}
+                      </span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-white">{user?.name}</p>
+                      <p className="text-xs text-blue-100 capitalize">{user?.role}</p>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="text-white/80 hover:text-white p-2 rounded-lg hover:bg-white/20 transition-all duration-200 backdrop-blur-sm"
+                      title="Logout"
+                    >
+                      <ArrowLeftOnRectangleIcon className="h-5 w-5" />
+                    </button>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">{user?.name}</p>
-                    <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="text-gray-400 hover:text-gray-600 p-1 rounded-md hover:bg-gray-100 transition-colors duration-200"
-                    title="Logout"
-                  >
-                    <ArrowLeftOnRectangleIcon className="h-5 w-5" />
-                  </button>
                 </div>
               </li>
             </ul>

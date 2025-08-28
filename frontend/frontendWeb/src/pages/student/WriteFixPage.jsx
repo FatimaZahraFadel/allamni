@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import StudentLayout from '../../components/student/StudentLayout';
 import {
   PhotoIcon,
+  PencilIcon,
   SparklesIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
@@ -13,8 +14,10 @@ import {
 export default function WriteFixPage() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const { t } = useTranslation();
+  const [inputMode, setInputMode] = useState('choose'); // 'choose', 'upload', 'type'
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [typedText, setTypedText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState(null);
   const [showMiniLesson, setShowMiniLesson] = useState(false);
@@ -50,14 +53,15 @@ export default function WriteFixPage() {
   };
 
   const handleAnalyze = async () => {
-    if (!selectedImage) return;
+    if (!selectedImage && !typedText.trim()) return;
 
     setIsAnalyzing(true);
-    
+
     // Simulate API call with mock data
     setTimeout(() => {
+      const textToAnalyze = typedText.trim() || "I like to play football with my frends after school. Its realy fun and I enjoy it alot.";
       const mockResult = {
-        extractedText: "I like to play football with my frends after school. Its realy fun and I enjoy it alot.",
+        extractedText: textToAnalyze,
         correctedText: "I like to play football with my friends after school. It's really fun and I enjoy it a lot.",
         errors: [
           {
@@ -133,52 +137,163 @@ export default function WriteFixPage() {
           </p>
         </div>
 
-        {/* Upload Section */}
-        <div className="bg-white rounded-3xl p-8 border-2 border-gray-100 shadow-lg">
-          <div className="text-center">
-            {!imagePreview ? (
-              <div className="border-3 border-dashed border-blue-300 rounded-2xl p-12 hover:border-blue-400 transition-colors duration-200">
-                <PhotoIcon className="h-16 w-16 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  {t('student.uploadImage')}
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Take a clear photo of your handwritten text
-                </p>
-                <label className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl py-3 px-6 font-bold text-lg cursor-pointer hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
-                  <PhotoIcon className="h-6 w-6" />
-                  <span>Choose Photo</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-                </label>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                <div className="relative inline-block">
-                  <img
-                    src={imagePreview}
-                    alt="Uploaded handwriting"
-                    className="max-w-full max-h-96 rounded-2xl shadow-lg border-2 border-gray-200"
-                  />
+        {/* Input Method Selection */}
+        {inputMode === 'choose' && (
+          <div className="bg-white rounded-3xl p-8 border-2 border-gray-100 shadow-lg">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Choose Your Input Method</h3>
+              <p className="text-gray-600">How would you like to provide your text for feedback?</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Upload Image Option */}
+              <button
+                onClick={() => setInputMode('upload')}
+                className="group bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 border-2 border-blue-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              >
+                <div className="text-center">
+                  <div className="bg-blue-100 rounded-full p-4 w-20 h-20 mx-auto mb-4 group-hover:bg-blue-200 transition-colors duration-300">
+                    <PhotoIcon className="h-12 w-12 text-blue-600 mx-auto" />
+                  </div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">Upload Image</h4>
+                  <p className="text-gray-600 text-sm">Take a photo of your handwritten text</p>
+                  <div className="mt-4 text-blue-600 font-medium">📸 Camera Ready</div>
+                </div>
+              </button>
+
+              {/* Type Text Option */}
+              <button
+                onClick={() => setInputMode('type')}
+                className="group bg-gradient-to-br from-green-50 to-blue-50 rounded-2xl p-8 border-2 border-green-200 hover:border-green-300 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              >
+                <div className="text-center">
+                  <div className="bg-green-100 rounded-full p-4 w-20 h-20 mx-auto mb-4 group-hover:bg-green-200 transition-colors duration-300">
+                    <PencilIcon className="h-12 w-12 text-green-600 mx-auto" />
+                  </div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">Type Text</h4>
+                  <p className="text-gray-600 text-sm">Write your text directly here</p>
+                  <div className="mt-4 text-green-600 font-medium">⌨️ Keyboard Ready</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Upload Image Mode */}
+        {inputMode === 'upload' && (
+          <div className="bg-white rounded-3xl p-8 border-2 border-gray-100 shadow-lg">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-800">Upload Your Handwriting</h3>
+              <button
+                onClick={() => {
+                  setInputMode('choose');
+                  setImagePreview(null);
+                  setSelectedImage(null);
+                  setAnalysisResult(null);
+                }}
+                className="text-gray-500 hover:text-gray-700 font-medium"
+              >
+                ← Back to options
+              </button>
+            </div>
+
+            <div className="text-center">
+              {!imagePreview ? (
+                <div className="border-3 border-dashed border-blue-300 rounded-2xl p-12 hover:border-blue-400 transition-colors duration-200">
+                  <PhotoIcon className="h-16 w-16 text-blue-400 mx-auto mb-4" />
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">Choose Your Photo</h4>
+                  <p className="text-gray-600 mb-6">Take a clear photo of your handwritten text</p>
+                  <label className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl py-3 px-6 font-bold text-lg cursor-pointer hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
+                    <PhotoIcon className="h-6 w-6" />
+                    <span>Choose Photo</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="relative inline-block">
+                    <img
+                      src={imagePreview}
+                      alt="Uploaded handwriting"
+                      className="max-w-full max-h-96 rounded-2xl shadow-lg border-2 border-gray-200"
+                    />
+                    <button
+                      onClick={() => {
+                        setImagePreview(null);
+                        setSelectedImage(null);
+                        setAnalysisResult(null);
+                      }}
+                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition-colors duration-200"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
                   <button
-                    onClick={() => {
-                      setImagePreview(null);
-                      setSelectedImage(null);
-                      setAnalysisResult(null);
-                    }}
-                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition-colors duration-200"
+                    onClick={handleAnalyze}
+                    disabled={isAnalyzing}
+                    className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-2xl py-4 px-8 font-bold text-lg hover:from-green-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    ✕
+                    {isAnalyzing ? (
+                      <>
+                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
+                        <span>Analyzing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <SparklesIcon className="h-6 w-6" />
+                        <span>{t('student.analyzeText')}</span>
+                      </>
+                    )}
                   </button>
                 </div>
-                
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Type Text Mode */}
+        {inputMode === 'type' && (
+          <div className="bg-white rounded-3xl p-8 border-2 border-gray-100 shadow-lg">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-gray-800">Type Your Text</h3>
+              <button
+                onClick={() => {
+                  setInputMode('choose');
+                  setTypedText('');
+                  setAnalysisResult(null);
+                }}
+                className="text-gray-500 hover:text-gray-700 font-medium"
+              >
+                ← Back to options
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Write your text here:
+                </label>
+                <textarea
+                  value={typedText}
+                  onChange={(e) => setTypedText(e.target.value)}
+                  placeholder="Type your text here and get instant AI feedback..."
+                  className="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl focus:border-blue-400 focus:outline-none resize-none text-lg"
+                />
+                <div className="text-right text-sm text-gray-500 mt-2">
+                  {typedText.length} characters
+                </div>
+              </div>
+
+              <div className="text-center">
                 <button
                   onClick={handleAnalyze}
-                  disabled={isAnalyzing}
+                  disabled={isAnalyzing || !typedText.trim()}
                   className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-2xl py-4 px-8 font-bold text-lg hover:from-green-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isAnalyzing ? (
@@ -194,9 +309,9 @@ export default function WriteFixPage() {
                   )}
                 </button>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Analysis Results */}
         {analysisResult && (

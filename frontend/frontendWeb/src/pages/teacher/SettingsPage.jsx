@@ -110,97 +110,109 @@ export default function SettingsPage() {
 
   return (
     <TeacherLayout>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-600">Manage your account settings and preferences</p>
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full px-6 py-3 mb-4 border-2 border-blue-200">
+            <span className="text-2xl">⚙️</span>
+            <span className="text-lg font-bold text-blue-700">Teacher Settings</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+            Customize Your Experience
+          </h1>
+          <p className="text-gray-600 text-lg">Manage your account settings and preferences</p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
-          <div className="lg:w-64">
-            <nav className="space-y-1">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
-                    activeTab === tab.id
-                      ? 'bg-primary-50 text-primary-600 border-r-2 border-primary-600'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  <tab.icon className="h-5 w-5 mr-3" />
-                  {tab.name}
-                </button>
-              ))}
-            </nav>
+          <div className="lg:w-72">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4">
+              <nav className="space-y-2">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`w-full flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-300 ${
+                      activeTab === tab.id
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg transform scale-105'
+                        : 'text-gray-700 hover:text-white hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:shadow-md hover:transform hover:scale-102'
+                    }`}
+                  >
+                    <tab.icon className="h-5 w-5 mr-3" />
+                    {tab.name}
+                  </button>
+                ))}
+              </nav>
+            </div>
           </div>
 
           {/* Content */}
           <div className="flex-1">
-            <div className="bg-white rounded-lg shadow-sm">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100">
               {/* Messages */}
               {message && (
-                <div className="p-4 bg-green-50 border-b border-green-200">
-                  <p className="text-green-600">{message}</p>
+                <div className="p-4 bg-green-50 border-b border-green-200 rounded-t-2xl">
+                  <p className="text-green-600 font-medium">{message}</p>
                 </div>
               )}
               {error && (
-                <div className="p-4 bg-red-50 border-b border-red-200">
-                  <p className="text-red-600">{error}</p>
+                <div className="p-4 bg-red-50 border-b border-red-200 rounded-t-2xl">
+                  <p className="text-red-600 font-medium">{error}</p>
                 </div>
               )}
 
               {/* Profile Tab */}
               {activeTab === 'profile' && (
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-6">Profile Information</h3>
+                <div className="p-8">
+                  <div className="text-center mb-8">
+                    <div className="text-3xl mb-2">👤</div>
+                    <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Profile Information</h3>
+                    <p className="text-gray-600 mt-1">Update your personal details</p>
+                  </div>
                   <form onSubmit={handleProfileUpdate} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
                           Full Name
                         </label>
                         <input
                           type="text"
                           value={profileData.name}
                           onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300 bg-gray-50/50"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
                           Email Address
                         </label>
                         <input
                           type="email"
                           value={profileData.email}
                           onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300 bg-gray-50/50"
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-bold text-gray-700 mb-2">
                         Language Preference
                       </label>
                       <select
                         value={profileData.language_preference}
                         onChange={(e) => setProfileData({ ...profileData, language_preference: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300 bg-gray-50/50"
                       >
                         <option value="en">English</option>
                         <option value="ar">Arabic</option>
                         <option value="fr">French</option>
                       </select>
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-end pt-4">
                       <button
                         type="submit"
                         disabled={isLoading}
-                        className="btn-primary disabled:opacity-50"
+                        className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-2xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                       >
                         {isLoading ? 'Saving...' : 'Save Changes'}
                       </button>

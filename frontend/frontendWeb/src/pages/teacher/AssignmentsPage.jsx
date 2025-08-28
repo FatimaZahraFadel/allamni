@@ -212,13 +212,13 @@ export default function AssignmentsPage() {
                     </div>
                   </div>
 
-                  <div className="flex space-x-2">
-                    <button className="flex-1 btn-secondary text-sm">
+                  <div className="flex space-x-3 mt-auto">
+                    <button className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 text-sm flex items-center justify-center">
                       View Submissions
                     </button>
                     <a
                       href={`/teacher/assignments/${assignment.id}`}
-                      className="flex-1 btn-primary text-sm text-center"
+                      className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 text-sm flex items-center justify-center"
                     >
                       View Details
                     </a>
@@ -319,17 +319,23 @@ function AssignmentModal({ assignment, classes, onClose, onSave }) {
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="fixed inset-0 bg-black bg-opacity-25" onClick={onClose} />
-        
-        <div className="relative bg-white rounded-xl shadow-xl w-full max-w-2xl p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            {assignment ? 'Edit Assignment' : 'Create New Assignment'}
-          </h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onClose} />
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+        <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-3xl p-8 border-2 border-gray-100 max-h-[90vh] overflow-y-auto">
+          <div className="text-center mb-6">
+            <div className="text-4xl mb-3">📝</div>
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+              {assignment ? 'Edit Assignment' : 'Create New Assignment'}
+            </h3>
+            <p className="text-gray-600 mt-2">
+              {assignment ? 'Update your assignment details' : 'Set up a new assignment for your students'}
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-bold text-gray-700 mb-2">
                   Assignment Title *
                 </label>
                 <input
@@ -337,20 +343,20 @@ function AssignmentModal({ assignment, classes, onClose, onSave }) {
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-300 bg-gray-50/50"
                   placeholder="Enter assignment title"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-gray-700 mb-2">
                   Class *
                 </label>
                 <select
                   value={formData.class_id}
                   onChange={(e) => setFormData({ ...formData, class_id: e.target.value })}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-300 bg-gray-50/50"
                 >
                   <option value="">Select a class</option>
                   {classes.map((classItem) => (
@@ -362,14 +368,14 @@ function AssignmentModal({ assignment, classes, onClose, onSave }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-gray-700 mb-2">
                   Type *
                 </label>
                 <select
                   value={formData.assignment_type}
                   onChange={(e) => setFormData({ ...formData, assignment_type: e.target.value })}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-300 bg-gray-50/50"
                 >
                   {assignmentTypes.map((type) => (
                     <option key={type.value} value={type.value}>
@@ -380,19 +386,19 @@ function AssignmentModal({ assignment, classes, onClose, onSave }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-gray-700 mb-2">
                   Due Date
                 </label>
                 <input
                   type="date"
                   value={formData.due_date}
                   onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-300 bg-gray-50/50"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-gray-700 mb-2">
                   Max Points *
                 </label>
                 <input
@@ -402,55 +408,57 @@ function AssignmentModal({ assignment, classes, onClose, onSave }) {
                   required
                   min="1"
                   max="1000"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-300 bg-gray-50/50"
                 />
               </div>
 
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-bold text-gray-700 mb-2">
                   Description
                 </label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-300 bg-gray-50/50 resize-none"
                   placeholder="Enter assignment description"
                 />
               </div>
 
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-bold text-gray-700 mb-2">
                   Instructions
                 </label>
                 <textarea
                   value={formData.instructions}
                   onChange={(e) => setFormData({ ...formData, instructions: e.target.value })}
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-300 bg-gray-50/50 resize-none"
                   placeholder="Enter detailed instructions for students"
                 />
               </div>
             </div>
 
             {error && (
-              <div className="text-red-600 text-sm">{error}</div>
+              <div className="bg-red-50 border border-red-200 rounded-xl p-3">
+                <p className="text-red-600 text-sm font-medium">{error}</p>
+              </div>
             )}
 
-            <div className="flex space-x-3 pt-4">
+            <div className="flex space-x-4 pt-6">
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 btn-secondary"
+                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-2xl transition-all duration-200"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 btn-primary disabled:opacity-50"
+                className="flex-1 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-3 px-6 rounded-2xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
               >
-                {isLoading ? 'Saving...' : (assignment ? 'Update' : 'Create')}
+                {isLoading ? 'Saving...' : (assignment ? 'Update Assignment' : 'Create Assignment')}
               </button>
             </div>
           </form>

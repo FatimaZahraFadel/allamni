@@ -274,7 +274,7 @@ export default function StudentsPage() {
             {!searchQuery && (
               <a
                 href="/teacher/classes"
-                className="btn-primary"
+                className="inline-flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <UserPlusIcon className="h-5 w-5 mr-2" />
                 Manage Classes
