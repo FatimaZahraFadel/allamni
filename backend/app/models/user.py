@@ -14,9 +14,9 @@ class UserRole(str, enum.Enum):
     TEACHER = "teacher"
 
 class LanguagePreference(str, enum.Enum):
-    ARABIC = "ar"
-    FRENCH = "fr"
-    ENGLISH = "en"
+    ARABIC = "ARABIC"
+    FRENCH = "FRENCH"
+    ENGLISH = "ENGLISH"
 
 class SubscriptionStatus(str, enum.Enum):
     ACTIVE = "active"

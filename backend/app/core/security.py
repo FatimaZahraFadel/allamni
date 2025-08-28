@@ -92,10 +92,14 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 def require_role(required_role: str):
     """Decorator to require specific user role"""
     def role_checker(current_user: User = Depends(get_current_active_user)) -> User:
-        if current_user.role != required_role:
+        # Handle case-insensitive role comparison
+        user_role = current_user.role.lower() if current_user.role else ""
+        required_role_lower = required_role.lower()
+
+        if user_role != required_role_lower:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="Not enough permissions"
+                detail=f"Not enough permissions. Required: {required_role}, User has: {current_user.role}"
             )
         return current_user
     return role_checker

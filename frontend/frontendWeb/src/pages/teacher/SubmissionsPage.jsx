@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { submissionsAPI, assignmentsAPI } from '../../services/api';
 import TeacherLayout from '../../components/teacher/TeacherLayout';
@@ -14,6 +15,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function SubmissionsPage() {
+  const navigate = useNavigate();
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const [submissions, setSubmissions] = useState([]);
   const [assignments, setAssignments] = useState([]);
@@ -79,7 +81,11 @@ export default function SubmissionsPage() {
 
   const getGradeDisplay = (submission) => {
     if (!submission.is_graded) return 'Not graded';
-    return `${submission.points_earned || 0}/${submission.assignment_max_points || 0}`;
+    return `${submission.grade || 0}/${submission.assignment_max_points || 100}`;
+  };
+
+  const handleViewSubmission = (submissionId) => {
+    navigate(`/teacher/submissions/${submissionId}`);
   };
 
   if (authLoading) {
@@ -245,11 +251,19 @@ export default function SubmissionsPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
-                          <button className="text-primary-600 hover:text-primary-900">
+                          <button
+                            onClick={() => handleViewSubmission(submission.id)}
+                            className="text-primary-600 hover:text-primary-900 p-1 rounded-lg hover:bg-primary-50 transition-colors duration-200"
+                            title="View and evaluate submission"
+                          >
                             <EyeIcon className="h-4 w-4" />
                           </button>
                           {!submission.is_graded && (
-                            <button className="text-green-600 hover:text-green-900">
+                            <button
+                              onClick={() => handleViewSubmission(submission.id)}
+                              className="text-green-600 hover:text-green-900 p-1 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                              title="Grade submission"
+                            >
                               <CheckCircleIcon className="h-4 w-4" />
                             </button>
                           )}

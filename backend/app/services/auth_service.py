@@ -50,19 +50,19 @@ class AuthService:
     def authenticate_user(db: Session, login_data: UserLogin) -> User:
         """Authenticate user and return user object"""
         user = db.query(User).filter(User.email == login_data.email).first()
-        
+
         if not user or not verify_password(login_data.password, user.password_hash):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect email or password"
             )
-        
+
         if not user.is_active:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Inactive user"
             )
-        
+
         return user
     
     @staticmethod

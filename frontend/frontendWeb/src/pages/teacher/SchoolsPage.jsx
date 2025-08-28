@@ -166,12 +166,12 @@ export default function SchoolsPage() {
                         {school.student_count || 0} students
                       </div>
                     </div>
-                    <a
-                      href={`/teacher/schools/${school.id}`}
-                      className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+                    <button
+                      onClick={() => navigate('/teacher/classes')}
+                      className="text-primary-600 hover:text-primary-700 text-sm font-medium hover:underline"
                     >
-                      View Details
-                    </a>
+                      View Classes
+                    </button>
                   </div>
                 </div>
               </div>

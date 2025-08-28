@@ -37,4 +37,8 @@ class SubmissionGrade(BaseModel):
 class SubmissionWithDetails(SubmissionResponse):
     assignment_title: str
     student_name: str
-    student_email: str
+    assignment_max_points: int = 100
+
+class SubmissionGrade(BaseModel):
+    grade: float
+    feedback: str = ""

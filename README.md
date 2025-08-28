@@ -129,7 +129,19 @@ exit
 alembic upgrade head
 ```
 
-7. **Start the backend server**
+7. **Seed database with comprehensive test data (RECOMMENDED)**
+```bash
+# This creates a complete educational environment with:
+# - 1 Teacher: ahmed.hassan@3allamni.com
+# - 10 Students: alice.johnson@student.com to jack.anderson@student.com
+# - 2 Schools with 3 classes total
+# - 9 assignments with student submissions and grades
+# - All passwords: password123
+
+python seed_database.py
+```
+
+8. **Start the backend server**
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```

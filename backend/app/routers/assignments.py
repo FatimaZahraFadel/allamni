@@ -12,6 +12,7 @@ from ..models.user import User
 from ..models.school import School
 from ..models.class_model import Class, StudentClass
 from ..models.assignment import Assignment
+from ..models.submission import Submission
 from ..schemas.assignment import (
     AssignmentCreate, AssignmentUpdate, AssignmentResponse,
     AssignmentWithSubmissions, AssignmentStats
@@ -90,46 +91,89 @@ async def get_assignments(
     assignments = query.all()
     return [AssignmentResponse.from_orm(assignment) for assignment in assignments]
 
-@router.get("/{assignment_id}", response_model=AssignmentWithSubmissions)
+@router.get("/{assignment_id}")
 async def get_assignment(
     assignment_id: int,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
-    """Get assignment by ID"""
-    assignment = db.query(Assignment).filter(Assignment.id == assignment_id).first()
-    
-    if not assignment:
+    """Get assignment by ID with submissions"""
+    try:
+        from sqlalchemy.orm import joinedload
+
+        assignment = db.query(Assignment).options(
+            joinedload(Assignment.submissions).joinedload(Submission.student)
+        ).filter(Assignment.id == assignment_id).first()
+
+        if not assignment:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Assignment not found"
+            )
+
+        # Check permissions - handle case insensitive role comparison
+        user_role = current_user.role.lower() if current_user.role else ""
+
+        if user_role == "teacher":
+            # Verify assignment belongs to teacher's class
+            class_obj = db.query(Class).join(School).filter(
+                Class.id == assignment.class_id,
+                School.teacher_id == current_user.id
+            ).first()
+            if not class_obj:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Not enough permissions"
+                )
+        else:
+            # Verify student is enrolled in the class
+            enrollment = db.query(StudentClass).filter(
+                StudentClass.student_id == current_user.id,
+                StudentClass.class_id == assignment.class_id
+            ).first()
+            if not enrollment:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Not enrolled in this class"
+                )
+
+        # Create response manually to avoid serialization issues
+        assignment_data = {
+            "id": assignment.id,
+            "class_id": assignment.class_id,
+            "title": assignment.title,
+            "description": assignment.description,
+            "due_date": assignment.due_date,
+            "max_points": assignment.max_points,
+            "created_at": assignment.created_at,
+            "updated_at": assignment.updated_at,
+            "submissions": [
+                {
+                    "id": sub.id,
+                    "assignment_id": sub.assignment_id,
+                    "student_id": sub.student_id,
+                    "text_content": sub.text_content,
+                    "submitted_at": sub.submitted_at,
+                    "is_graded": sub.is_graded,
+                    "grade": sub.grade,
+                    "feedback": sub.feedback,
+                    "student_name": sub.student.name if sub.student else f"Student {sub.student_id}",
+                } for sub in assignment.submissions
+            ]
+        }
+
+        return assignment_data
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error in get_assignment: {e}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Assignment not found"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch assignment: {str(e)}"
         )
-    
-    # Check permissions
-    if current_user.role == "teacher":
-        # Verify assignment belongs to teacher's class
-        class_obj = db.query(Class).join(School).filter(
-            Class.id == assignment.class_id,
-            School.teacher_id == current_user.id
-        ).first()
-        if not class_obj:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Not enough permissions"
-            )
-    else:
-        # Verify student is enrolled in the class
-        enrollment = db.query(StudentClass).filter(
-            StudentClass.student_id == current_user.id,
-            StudentClass.class_id == assignment.class_id
-        ).first()
-        if not enrollment:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Not enrolled in this class"
-            )
-    
-    return AssignmentWithSubmissions.from_orm(assignment)
 
 @router.put("/{assignment_id}", response_model=AssignmentResponse)
 async def update_assignment(

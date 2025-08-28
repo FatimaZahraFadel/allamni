@@ -237,6 +237,12 @@ export const assignmentsAPI = {
     const response = await api.get(`/api/v1/assignments/${assignmentId}/stats`);
     return response.data;
   },
+
+  // Get assignments for student (uses same endpoint as teachers, backend filters by role)
+  getStudentAssignments: async () => {
+    const response = await api.get('/api/v1/assignments/');
+    return response.data;
+  },
 };
 
 // Submissions API functions
@@ -247,6 +253,12 @@ export const submissionsAPI = {
     return response.data;
   },
 
+  // Get submissions by assignment (get assignment with submissions)
+  getSubmissionsByAssignment: async (assignmentId) => {
+    const response = await api.get(`/api/v1/assignments/${assignmentId}`);
+    return response.data.submissions || [];
+  },
+
   // Get submission details
   getSubmission: async (submissionId) => {
     const response = await api.get(`/api/v1/submissions/${submissionId}`);
@@ -255,7 +267,26 @@ export const submissionsAPI = {
 
   // Grade submission
   gradeSubmission: async (submissionId, gradeData) => {
-    const response = await api.post(`/api/v1/submissions/${submissionId}/grade`, gradeData);
+    const response = await api.put(`/api/v1/submissions/${submissionId}/grade`, gradeData);
+    return response.data;
+  },
+
+  // Submit assignment (for students)
+  submitAssignment: async (assignmentId, submissionData) => {
+    const response = await api.post('/api/v1/submissions/', {
+      assignment_id: assignmentId,
+      text_content: submissionData.content
+    });
+    return response.data;
+  },
+
+  // Upload file submission (for students)
+  uploadSubmission: async (assignmentId, formData) => {
+    const response = await api.post(`/api/v1/submissions/upload?assignment_id=${assignmentId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   },
 };

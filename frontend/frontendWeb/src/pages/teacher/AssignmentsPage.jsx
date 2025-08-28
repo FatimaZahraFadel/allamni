@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { assignmentsAPI, classesAPI } from '../../services/api';
 import TeacherLayout from '../../components/teacher/TeacherLayout';
@@ -10,10 +11,12 @@ import {
   ClockIcon,
   CheckCircleIcon,
   CalendarIcon,
-  AcademicCapIcon
+  AcademicCapIcon,
+  EyeIcon
 } from '@heroicons/react/24/outline';
 
 export default function AssignmentsPage() {
+  const navigate = useNavigate();
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const [assignments, setAssignments] = useState([]);
   const [classes, setClasses] = useState([]);
@@ -36,15 +39,18 @@ export default function AssignmentsPage() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
+      setError('');
+
       const [assignmentsData, classesData] = await Promise.all([
         assignmentsAPI.getAssignments(),
         classesAPI.getClasses()
       ]);
+
       setAssignments(assignmentsData);
       setClasses(classesData);
     } catch (err) {
       console.error('Failed to fetch data:', err);
-      setError('Failed to load data');
+      setError(`Failed to load data: ${err.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -137,6 +143,12 @@ export default function AssignmentsPage() {
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <p className="text-red-600">{error}</p>
+            <button
+              onClick={fetchData}
+              className="mt-2 text-red-600 hover:text-red-800 font-medium underline"
+            >
+              Try Again
+            </button>
           </div>
         )}
 
@@ -212,16 +224,14 @@ export default function AssignmentsPage() {
                     </div>
                   </div>
 
-                  <div className="flex space-x-3 mt-auto">
-                    <button className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 text-sm flex items-center justify-center">
+                  <div className="mt-auto">
+                    <button
+                      onClick={() => navigate(`/teacher/assignments/${assignment.id}/submissions`)}
+                      className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 text-sm flex items-center justify-center"
+                    >
+                      <EyeIcon className="h-4 w-4 mr-2" />
                       View Submissions
                     </button>
-                    <a
-                      href={`/teacher/assignments/${assignment.id}`}
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 text-sm flex items-center justify-center"
-                    >
-                      View Details
-                    </a>
                   </div>
                 </div>
               </div>

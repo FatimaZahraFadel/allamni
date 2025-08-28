@@ -31,6 +31,10 @@ class ClassResponse(ClassBase):
     class Config:
         from_attributes = True
 
+class ClassWithStudentCount(ClassResponse):
+    student_count: int
+    school_name: Optional[str] = None
+
 class StudentClassCreate(BaseModel):
     student_id: int
     class_id: int

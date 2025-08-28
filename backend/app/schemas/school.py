@@ -30,6 +30,10 @@ class SchoolResponse(SchoolBase):
 class SchoolWithClasses(SchoolResponse):
     classes: List["ClassResponse"] = []
 
+class SchoolWithCounts(SchoolResponse):
+    class_count: int = 0
+    student_count: int = 0
+
 # Import here to avoid circular imports
 from .class_schema import ClassResponse
 SchoolWithClasses.model_rebuild()

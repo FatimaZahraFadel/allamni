@@ -91,14 +91,23 @@ export default function TeacherLayout({ children }) {
                     </ul>
                   </li>
                   <li className="-mx-6 mt-auto">
-                    <div className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
-                      <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
-                        <span className="text-primary-600 font-medium">
-                          {user?.name?.charAt(0)?.toUpperCase()}
-                        </span>
+                    <div className="flex items-center justify-between px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
+                      <div className="flex items-center gap-x-4">
+                        <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
+                          <span className="text-primary-600 font-medium">
+                            {user?.name?.charAt(0)?.toUpperCase()}
+                          </span>
+                        </div>
+                        <span className="sr-only">Your profile</span>
+                        <span>{user?.name}</span>
                       </div>
-                      <span className="sr-only">Your profile</span>
-                      <span>{user?.name}</span>
+                      <button
+                        onClick={handleLogout}
+                        className="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-all duration-200"
+                        title="Logout"
+                      >
+                        <ArrowLeftOnRectangleIcon className="h-5 w-5" />
+                      </button>
                     </div>
                   </li>
                 </ul>
@@ -111,8 +120,8 @@ export default function TeacherLayout({ children }) {
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gradient-to-b from-blue-50 via-purple-50 to-indigo-50 border-r border-blue-200 px-6 shadow-xl">
-          <div className="flex h-16 shrink-0 items-center">
-            <div>
+          <div className="flex h-16 shrink-0 items-center justify-center">
+            <div className="text-center">
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">3allamni</h1>
               <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Teacher Portal</span>
             </div>

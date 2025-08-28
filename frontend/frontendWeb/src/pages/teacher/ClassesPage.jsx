@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { classesAPI, schoolsAPI, usersAPI } from '../../services/api';
 import TeacherLayout from '../../components/teacher/TeacherLayout';
@@ -10,10 +11,12 @@ import {
   UsersIcon,
   BuildingOfficeIcon,
   UserPlusIcon,
-  XMarkIcon
+  XMarkIcon,
+  MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 
 export default function ClassesPage() {
+  const navigate = useNavigate();
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const [classes, setClasses] = useState([]);
   const [schools, setSchools] = useState([]);
@@ -183,12 +186,12 @@ export default function ClassesPage() {
                       <UserPlusIcon className="h-4 w-4 mr-1" />
                       Manage Students
                     </button>
-                    <a
-                      href={`/teacher/classes/${classItem.id}`}
+                    <button
+                      onClick={() => navigate(`/teacher/classes/${classItem.id}`)}
                       className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-xl font-bold hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 text-sm text-center flex items-center justify-center"
                     >
                       View Details
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -241,6 +244,7 @@ export default function ClassesPage() {
             onUpdate={(updatedClass) => {
               setClasses(classes.map(c => c.id === updatedClass.id ? updatedClass : c));
             }}
+            onRefresh={fetchData}
           />
         )}
       </div>
@@ -404,12 +408,13 @@ function ClassModal({ classItem, schools, onClose, onSave }) {
 }
 
 // Students Modal Component
-function StudentsModal({ classItem, onClose, onUpdate }) {
+function StudentsModal({ classItem, onClose, onUpdate, onRefresh }) {
   const [students, setStudents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchClassStudents();
@@ -442,116 +447,197 @@ function StudentsModal({ classItem, onClose, onUpdate }) {
 
   const handleAddStudent = async (studentId) => {
     try {
+      setIsLoading(true);
       await classesAPI.enrollStudent(classItem.id, studentId);
       await fetchClassStudents();
+      // Also refresh the main classes list to update student count
+      if (onRefresh) await onRefresh();
       setSearchResults([]);
       setSearchQuery('');
+      setError('');
     } catch (err) {
       console.error('Failed to add student:', err);
+      const errorMessage = err.response?.data?.detail || 'Failed to add student to class';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleRemoveStudent = async (studentId) => {
     try {
+      setIsLoading(true);
       await classesAPI.removeStudent(classItem.id, studentId);
-      setStudents(students.filter(s => s.id !== studentId));
+      await fetchClassStudents();
+      // Also refresh the main classes list to update student count
+      if (onRefresh) await onRefresh();
+      setError('');
     } catch (err) {
       console.error('Failed to remove student:', err);
+      setError('Failed to remove student from class');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="fixed inset-0 bg-black bg-opacity-25" onClick={onClose} />
-        
-        <div className="relative bg-white rounded-xl shadow-xl w-full max-w-2xl p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-gray-900">
-              Manage Students - {classItem.name}
-            </h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onClose} />
+
+        <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl p-8 border border-gray-100">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Manage Students
+              </h3>
+              <p className="text-gray-600 mt-1">{classItem.name}</p>
+            </div>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
+              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-all duration-200"
             >
               <XMarkIcon className="h-6 w-6" />
             </button>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <p className="text-red-600 font-medium">{error}</p>
+            </div>
+          )}
+
           {/* Add Student Section */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Add Student by ID or Email
-            </label>
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="Enter student ID or email"
-              />
+          <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl border border-blue-200">
+            <div className="flex items-center mb-4">
+              <UserPlusIcon className="h-6 w-6 text-blue-600 mr-2" />
+              <h4 className="text-lg font-semibold text-gray-900">Add New Student</h4>
+            </div>
+            <p className="text-gray-600 mb-4">Search for students by name, email, or student ID</p>
+
+            <div className="flex space-x-3">
+              <div className="flex-1 relative">
+                <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                  className="w-full pl-12 pr-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  placeholder="Enter student name, email, or ID..."
+                />
+              </div>
               <button
                 onClick={handleSearch}
-                disabled={isSearching}
-                className="btn-primary"
+                disabled={isSearching || !searchQuery.trim()}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:hover:scale-100 flex items-center"
               >
-                {isSearching ? 'Searching...' : 'Search'}
+                {isSearching ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Searching...
+                  </>
+                ) : (
+                  <>
+                    <MagnifyingGlassIcon className="h-5 w-5 mr-2" />
+                    Search
+                  </>
+                )}
               </button>
             </div>
 
             {/* Search Results */}
             {searchResults.length > 0 && (
-              <div className="mt-2 border border-gray-200 rounded-lg">
-                {searchResults.map((student) => (
-                  <div key={student.id} className="flex items-center justify-between p-3 border-b border-gray-200 last:border-b-0">
-                    <div>
-                      <p className="font-medium text-gray-900">{student.name}</p>
-                      <p className="text-sm text-gray-500">{student.email}</p>
+              <div className="mt-4 bg-white border-2 border-gray-200 rounded-xl shadow-sm">
+                <div className="p-3 bg-gray-50 border-b border-gray-200 rounded-t-xl">
+                  <p className="text-sm font-medium text-gray-700">Search Results ({searchResults.length})</p>
+                </div>
+                <div className="max-h-48 overflow-y-auto">
+                  {searchResults.map((student) => (
+                    <div key={student.id} className="flex items-center justify-between p-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-200">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                          <span className="text-blue-600 font-medium text-sm">
+                            {student.name?.charAt(0)?.toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">{student.name}</p>
+                          <p className="text-sm text-gray-500">{student.email}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleAddStudent(student.id)}
+                        disabled={isLoading}
+                        className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors duration-200 disabled:opacity-50 flex items-center"
+                      >
+                        <UserPlusIcon className="h-4 w-4 mr-1" />
+                        Add
+                      </button>
                     </div>
-                    <button
-                      onClick={() => handleAddStudent(student.id)}
-                      className="btn-primary text-sm"
-                    >
-                      Add
-                    </button>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </div>
 
           {/* Current Students */}
-          <div>
-            <h4 className="text-sm font-medium text-gray-700 mb-3">
-              Current Students ({students.length})
-            </h4>
-            {isLoading ? (
-              <div className="flex items-center justify-center h-32">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          <div className="bg-white border-2 border-gray-200 rounded-2xl">
+            <div className="p-4 bg-gray-50 border-b border-gray-200 rounded-t-2xl">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <UsersIcon className="h-5 w-5 text-gray-600 mr-2" />
+                  <h4 className="text-lg font-semibold text-gray-900">
+                    Enrolled Students
+                  </h4>
+                </div>
+                <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+                  {students.length} {students.length === 1 ? 'student' : 'students'}
+                </span>
               </div>
-            ) : students.length > 0 ? (
-              <div className="space-y-2 max-h-64 overflow-y-auto">
-                {students.map((student) => (
-                  <div key={student.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <p className="font-medium text-gray-900">{student.name}</p>
-                      <p className="text-sm text-gray-500">{student.email}</p>
+            </div>
+
+            <div className="p-4">
+              {isLoading ? (
+                <div className="flex items-center justify-center h-32">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                </div>
+              ) : students.length > 0 ? (
+                <div className="space-y-3 max-h-80 overflow-y-auto">
+                  {students.map((student) => (
+                    <div key={student.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">
+                            {student.name?.charAt(0)?.toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900">{student.name}</p>
+                          <p className="text-sm text-gray-500">{student.email}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleRemoveStudent(student.id)}
+                        disabled={isLoading}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all duration-200 disabled:opacity-50"
+                        title="Remove student from class"
+                      >
+                        <XMarkIcon className="h-5 w-5" />
+                      </button>
                     </div>
-                    <button
-                      onClick={() => handleRemoveStudent(student.id)}
-                      className="text-red-600 hover:text-red-700 p-1"
-                    >
-                      <XMarkIcon className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8 text-gray-500">
-                No students enrolled yet
-              </div>
-            )}
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <UsersIcon className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No students enrolled</h3>
+                  <p className="text-gray-500">Search and add students to get started</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

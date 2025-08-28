@@ -12,9 +12,9 @@ class UserRole(str, Enum):
     TEACHER = "teacher"
 
 class LanguagePreference(str, Enum):
-    ARABIC = "ar"
-    FRENCH = "fr"
-    ENGLISH = "en"
+    ARABIC = "ARABIC"
+    FRENCH = "FRENCH"
+    ENGLISH = "ENGLISH"
 
 class SubscriptionStatus(str, Enum):
     ACTIVE = "active"

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { assignmentsAPI, submissionsAPI } from '../../services/api';
 import StudentLayout from '../../components/student/StudentLayout';
 import {
   DocumentTextIcon,
@@ -17,81 +18,105 @@ export default function AssignmentsPage() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const { t } = useTranslation();
   const [assignments, setAssignments] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [submissionText, setSubmissionText] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Mock assignments data
   useEffect(() => {
-    const fetchAssignments = async () => {
-      setIsLoading(true);
-      // Simulate API call with mock data
-      setTimeout(() => {
-        const mockAssignments = [
-          {
-            id: 1,
-            title: "Creative Writing: My Summer Adventure",
-            description: "Write a short story about an exciting adventure you had or would like to have during summer vacation. Use descriptive language and include dialogue.",
-            teacher: "Ms. Johnson",
-            subject: "English",
-            dueDate: "2024-02-15",
-            status: "pending",
-            points: 100,
-            instructions: "Your story should be 300-500 words long. Include at least 3 characters and describe the setting clearly. Use proper grammar and punctuation.",
-            submittedAt: null,
-            grade: null,
-            feedback: null
-          },
-          {
-            id: 2,
-            title: "Grammar Practice: Sentence Structure",
-            description: "Complete the grammar exercises focusing on compound and complex sentences.",
-            teacher: "Ms. Johnson",
-            subject: "English",
-            dueDate: "2024-02-10",
-            status: "submitted",
-            points: 50,
-            instructions: "Complete all 20 exercises in the worksheet. Pay attention to proper comma usage and sentence variety.",
-            submittedAt: "2024-02-08",
-            grade: 45,
-            feedback: "Great work! Just watch out for comma splices in questions 15-17."
-          },
-          {
-            id: 3,
-            title: "Reading Comprehension: The Secret Garden",
-            description: "Read Chapter 5 of 'The Secret Garden' and answer the comprehension questions.",
-            teacher: "Ms. Johnson",
-            subject: "English",
-            dueDate: "2024-02-20",
-            status: "pending",
-            points: 75,
-            instructions: "Read the chapter carefully and answer all 10 questions in complete sentences. Support your answers with evidence from the text.",
-            submittedAt: null,
-            grade: null,
-            feedback: null
-          },
-          {
-            id: 4,
-            title: "Vocabulary Building: Week 3",
-            description: "Learn and practice this week's vocabulary words through various exercises.",
-            teacher: "Ms. Johnson",
-            subject: "English",
-            dueDate: "2024-02-05",
-            status: "overdue",
-            points: 25,
-            instructions: "Complete the vocabulary worksheet and write sentences using each word correctly.",
-            submittedAt: null,
-            grade: null,
-            feedback: null
-          }
-        ];
-        setAssignments(mockAssignments);
-        setIsLoading(false);
-      }, 1000);
-    };
+    if (!authLoading && (!isAuthenticated || !user || user.role !== 'student')) {
+      window.location.href = '/';
+      return;
+    }
 
-    fetchAssignments();
-  }, []);
+    if (isAuthenticated && user && user.role === 'student') {
+      fetchAssignments();
+    }
+  }, [user, isAuthenticated, authLoading]);
+
+  const fetchAssignments = async () => {
+    try {
+      setIsLoading(true);
+      setError('');
+
+      // Get assignments for student's classes and their submissions
+      const [assignmentsData, submissionsData] = await Promise.all([
+        assignmentsAPI.getStudentAssignments(),
+        submissionsAPI.getSubmissions()
+      ]);
+
+      // Enhance assignments with submission status
+      const enhancedAssignments = assignmentsData.map(assignment => {
+        const submission = submissionsData.find(sub => sub.assignment_id === assignment.id);
+        return {
+          ...assignment,
+          submission,
+          status: getAssignmentStatus(assignment, submission)
+        };
+      });
+
+      setAssignments(enhancedAssignments);
+      setSubmissions(submissionsData);
+    } catch (err) {
+      console.error('Failed to fetch assignments:', err);
+      setError(`Failed to load assignments: ${err.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getAssignmentStatus = (assignment, submission) => {
+    if (submission) {
+      if (submission.is_graded) return 'graded';
+      return 'submitted';
+    }
+    if (assignment.due_date && new Date(assignment.due_date) < new Date()) {
+      return 'overdue';
+    }
+    return 'pending';
+  };
+
+  const handleSubmitAssignment = async (assignmentId) => {
+    try {
+      setIsSubmitting(true);
+      setError('');
+
+      if (selectedFile) {
+        // Handle file upload
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        await submissionsAPI.uploadSubmission(assignmentId, formData);
+      } else if (submissionText.trim()) {
+        // Handle text submission
+        await submissionsAPI.submitAssignment(assignmentId, {
+          content: submissionText
+        });
+      } else {
+        setError('Please provide either text content or upload a file');
+        return;
+      }
+
+      setSelectedAssignment(null);
+      setSubmissionText('');
+      setSelectedFile(null);
+      await fetchAssignments(); // Refresh assignments
+    } catch (err) {
+      console.error('Failed to submit assignment:', err);
+      setError('Failed to submit assignment');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
 
   // Authentication check
   if (authLoading) {
@@ -145,14 +170,7 @@ export default function AssignmentsPage() {
   };
 
   const handleSubmit = (assignmentId) => {
-    // Simulate submission
-    setAssignments(prev => prev.map(assignment =>
-      assignment.id === assignmentId
-        ? { ...assignment, status: 'submitted', submittedAt: new Date().toISOString().split('T')[0] }
-        : assignment
-    ));
-    setSelectedAssignment(null);
-    setSubmissionText('');
+    handleSubmitAssignment(assignmentId);
   };
 
   return (
@@ -204,6 +222,13 @@ export default function AssignmentsPage() {
           </div>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+            <p className="text-red-600 font-medium">{error}</p>
+          </div>
+        )}
+
         {/* Assignments List */}
         {isLoading ? (
           <div className="flex items-center justify-center h-64">
@@ -236,40 +261,137 @@ export default function AssignmentsPage() {
                   </div>
 
                   {selectedAssignment.status === 'pending' && (
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-800 mb-4">Submit Your Work</h3>
-                      <textarea
-                        value={submissionText}
-                        onChange={(e) => setSubmissionText(e.target.value)}
-                        placeholder="Type your assignment submission here..."
-                        className="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl focus:border-blue-400 focus:outline-none resize-none"
-                      />
-                      <div className="flex justify-between items-center mt-4">
-                        <div className="text-sm text-gray-500">
+                    <div className="bg-blue-50 rounded-2xl p-6 border-2 border-blue-200">
+                      <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <PaperAirplaneIcon className="h-6 w-6 text-blue-600 mr-2" />
+                        Submit Your Work
+                      </h3>
+
+                      {/* Text Submission */}
+                      <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Written Response
+                        </label>
+                        <textarea
+                          value={submissionText}
+                          onChange={(e) => setSubmissionText(e.target.value)}
+                          placeholder="Type your assignment submission here..."
+                          className="w-full h-40 p-4 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:outline-none resize-none"
+                        />
+                        <div className="text-sm text-gray-500 mt-1">
                           {submissionText.length} characters
+                        </div>
+                      </div>
+
+                      {/* File Upload */}
+                      <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Upload File (Optional)
+                        </label>
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-colors duration-200">
+                          <input
+                            type="file"
+                            onChange={handleFileSelect}
+                            className="hidden"
+                            id="file-upload"
+                            accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
+                          />
+                          <label
+                            htmlFor="file-upload"
+                            className="cursor-pointer flex flex-col items-center"
+                          >
+                            <DocumentTextIcon className="h-12 w-12 text-gray-400 mb-2" />
+                            <span className="text-sm font-medium text-gray-600">
+                              Click to upload a file
+                            </span>
+                            <span className="text-xs text-gray-500 mt-1">
+                              PDF, DOC, TXT, or Image files
+                            </span>
+                          </label>
+                        </div>
+                        {selectedFile && (
+                          <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                            <p className="text-sm text-green-700">
+                              Selected: {selectedFile.name}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-gray-600">
+                          {submissionText.trim() || selectedFile ? 'Ready to submit' : 'Please provide text or upload a file'}
                         </div>
                         <button
                           onClick={() => handleSubmit(selectedAssignment.id)}
-                          disabled={!submissionText.trim()}
-                          className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-2xl py-3 px-6 font-bold hover:from-green-600 hover:to-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={!submissionText.trim() && !selectedFile || isSubmitting}
+                          className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-xl py-3 px-6 font-bold hover:from-green-600 hover:to-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          <PaperAirplaneIcon className="h-5 w-5" />
-                          <span>Submit Assignment</span>
+                          {isSubmitting ? (
+                            <>
+                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                              <span>Submitting...</span>
+                            </>
+                          ) : (
+                            <>
+                              <PaperAirplaneIcon className="h-5 w-5" />
+                              <span>Submit Assignment</span>
+                            </>
+                          )}
                         </button>
                       </div>
                     </div>
                   )}
 
-                  {selectedAssignment.status === 'submitted' && selectedAssignment.feedback && (
-                    <div className="bg-green-50 rounded-2xl p-6 border-2 border-green-200">
-                      <h3 className="text-lg font-bold text-green-800 mb-2">Teacher Feedback</h3>
-                      <p className="text-green-700">{selectedAssignment.feedback}</p>
-                      {selectedAssignment.grade && (
-                        <div className="mt-4 flex items-center space-x-2">
-                          <span className="text-green-800 font-bold">Grade:</span>
-                          <span className="text-2xl font-bold text-green-600">
-                            {selectedAssignment.grade}/{selectedAssignment.points}
-                          </span>
+                  {(selectedAssignment.status === 'submitted' || selectedAssignment.status === 'graded') && selectedAssignment.submission && (
+                    <div className="space-y-4">
+                      {/* Submission Status */}
+                      <div className="bg-blue-50 rounded-2xl p-6 border-2 border-blue-200">
+                        <h3 className="text-lg font-bold text-blue-800 mb-2 flex items-center">
+                          <CheckCircleIcon className="h-6 w-6 text-blue-600 mr-2" />
+                          Your Submission
+                        </h3>
+                        <p className="text-blue-700 mb-2">
+                          Submitted on: {new Date(selectedAssignment.submission?.submitted_at).toLocaleDateString()}
+                        </p>
+                        {selectedAssignment.submission?.text_content && (
+                          <div className="bg-white rounded-lg p-4 border border-blue-200">
+                            <p className="text-gray-700">{selectedAssignment.submission.text_content}</p>
+                          </div>
+                        )}
+                        {selectedAssignment.submission?.file_url && (
+                          <div className="bg-white rounded-lg p-4 border border-blue-200 mt-2">
+                            <p className="text-gray-700">📎 File submitted</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Teacher Feedback */}
+                      {selectedAssignment.submission?.is_graded && (
+                        <div className="bg-green-50 rounded-2xl p-6 border-2 border-green-200">
+                          <h3 className="text-lg font-bold text-green-800 mb-2 flex items-center">
+                            <CheckCircleIcon className="h-6 w-6 text-green-600 mr-2" />
+                            Teacher Evaluation
+                          </h3>
+
+                          {selectedAssignment.submission?.grade !== null && selectedAssignment.submission?.grade !== undefined && (
+                            <div className="mb-4 flex items-center space-x-2">
+                              <span className="text-green-800 font-bold">Grade:</span>
+                              <span className="text-3xl font-bold text-green-600">
+                                {selectedAssignment.submission?.grade}/{selectedAssignment.max_points}
+                              </span>
+                              <span className="text-green-700">
+                                ({Math.round((selectedAssignment.submission?.grade / selectedAssignment.max_points) * 100)}%)
+                              </span>
+                            </div>
+                          )}
+
+                          {selectedAssignment.submission?.feedback && (
+                            <div className="bg-white rounded-lg p-4 border border-green-200">
+                              <h4 className="font-medium text-green-800 mb-2">Feedback:</h4>
+                              <p className="text-green-700">{selectedAssignment.submission.feedback}</p>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -282,19 +404,20 @@ export default function AssignmentsPage() {
                   <h4 className="font-bold text-gray-800 mb-3">Assignment Details</h4>
                   <div className="space-y-3 text-sm">
                     <div className="flex items-center space-x-2">
-                      <UserIcon className="h-4 w-4 text-gray-500" />
-                      <span className="text-gray-600">Teacher: {selectedAssignment.teacher}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
                       <DocumentTextIcon className="h-4 w-4 text-gray-500" />
-                      <span className="text-gray-600">Subject: {selectedAssignment.subject}</span>
+                      <span className="text-gray-600">Type: {selectedAssignment.assignment_type}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <CalendarIcon className="h-4 w-4 text-gray-500" />
-                      <span className="text-gray-600">Due: {formatDate(selectedAssignment.dueDate)}</span>
+                      <span className="text-gray-600">
+                        Due: {selectedAssignment.due_date
+                          ? formatDate(selectedAssignment.due_date)
+                          : 'No due date'
+                        }
+                      </span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <span className="text-gray-600">Points: {selectedAssignment.points}</span>
+                      <span className="text-gray-600">Points: {selectedAssignment.max_points}</span>
                     </div>
                   </div>
                 </div>
@@ -309,14 +432,29 @@ export default function AssignmentsPage() {
                       {selectedAssignment.status}
                     </span>
                   </div>
-                  {selectedAssignment.submittedAt && (
+                  {selectedAssignment.submission?.submitted_at && (
                     <p className={`text-${getStatusColor(selectedAssignment.status)}-600 text-sm`}>
-                      Submitted on {formatDate(selectedAssignment.submittedAt)}
+                      Submitted on {formatDate(selectedAssignment.submission?.submitted_at)}
                     </p>
                   )}
                 </div>
               </div>
             </div>
+          </div>
+        ) : assignments.length === 0 ? (
+          /* No Assignments */
+          <div className="text-center py-12">
+            <div className="text-8xl mb-6">📚</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">No Assignments Yet</h2>
+            <p className="text-gray-600 mb-8">
+              Your teacher hasn't assigned any homework yet. Check back later!
+            </p>
+            <button
+              onClick={fetchAssignments}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:from-blue-600 hover:to-purple-700 transition-all duration-200"
+            >
+              Refresh
+            </button>
           </div>
         ) : (
           /* Assignments Grid */
@@ -324,7 +462,7 @@ export default function AssignmentsPage() {
             {assignments.map((assignment) => {
               const StatusIcon = getStatusIcon(assignment.status);
               const statusColor = getStatusColor(assignment.status);
-              const overdue = isOverdue(assignment.dueDate, assignment.status);
+              const overdue = isOverdue(assignment.due_date, assignment.status);
 
               return (
                 <div
@@ -348,24 +486,28 @@ export default function AssignmentsPage() {
 
                       <div className="flex items-center space-x-6 text-sm text-gray-500">
                         <div className="flex items-center space-x-1">
-                          <UserIcon className="h-4 w-4" />
-                          <span>{assignment.teacher}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
                           <CalendarIcon className="h-4 w-4" />
-                          <span>Due {formatDate(assignment.dueDate)}</span>
+                          <span>
+                            {assignment.due_date
+                              ? `Due ${formatDate(assignment.due_date)}`
+                              : 'No due date'
+                            }
+                          </span>
                         </div>
                         <div className="flex items-center space-x-1">
-                          <span>{assignment.points} points</span>
+                          <span>{assignment.max_points} points</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <span className="capitalize">{assignment.assignment_type}</span>
                         </div>
                       </div>
                     </div>
 
                     <div className="flex items-center space-x-2">
-                      {assignment.grade && (
+                      {assignment.submission?.grade !== null && assignment.submission?.grade !== undefined && (
                         <div className="text-center">
                           <div className="text-lg font-bold text-green-600">
-                            {assignment.grade}/{assignment.points}
+                            {assignment.submission?.grade}/{assignment.max_points}
                           </div>
                           <div className="text-xs text-gray-500">Grade</div>
                         </div>

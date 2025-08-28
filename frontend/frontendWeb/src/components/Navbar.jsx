@@ -14,12 +14,27 @@ export default function Navbar() {
   const [authMode, setAuthMode] = useState('login'); // 'login' or 'signup'
 
   const navigation = [
-    { name: t('nav.home'), href: '/' },
-    { name: t('nav.features'), href: '#features' },
-    { name: t('nav.pricing'), href: '/pricing' },
-    { name: t('nav.about'), href: '#about' },
-    { name: t('nav.contact'), href: '#contact' },
+    { name: t('nav.home'), href: '/', type: 'link' },
+    { name: t('nav.features'), href: '#features', type: 'scroll' },
+    { name: t('nav.pricing'), href: '/pricing', type: 'link' },
+    { name: t('nav.about'), href: '#features', type: 'scroll' }, // Redirect to features as requested
+    { name: t('nav.contact'), href: '/contact', type: 'link' },
   ];
+
+  const handleNavClick = (item, e) => {
+    if (item.type === 'scroll') {
+      e.preventDefault();
+      const targetId = item.href.substring(1); // Remove the #
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+    setIsMenuOpen(false);
+  };
 
   const openAuthModal = (mode) => {
     setAuthMode(mode);
@@ -53,14 +68,26 @@ export default function Navbar() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
               {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="text-gray-700 hover:text-blue-600 font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:bg-blue-50/50 relative group"
-                >
-                  {item.name}
-                  <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                </Link>
+                item.type === 'scroll' ? (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => handleNavClick(item, e)}
+                    className="text-gray-700 hover:text-blue-600 font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:bg-blue-50/50 relative group cursor-pointer"
+                  >
+                    {item.name}
+                    <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                  </a>
+                ) : (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className="text-gray-700 hover:text-blue-600 font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:bg-blue-50/50 relative group"
+                  >
+                    {item.name}
+                    <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                  </Link>
+                )
               ))}
             </div>
 
@@ -120,14 +147,25 @@ export default function Navbar() {
             <div className="lg:hidden">
               <div className="px-4 pt-4 pb-6 space-y-3 bg-white/95 backdrop-blur-md border-t border-gray-200/50 shadow-lg">
                 {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className="block px-4 py-3 text-gray-700 hover:text-blue-600 font-medium rounded-lg hover:bg-blue-50/50 transition-all duration-300"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
+                  item.type === 'scroll' ? (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      onClick={(e) => handleNavClick(item, e)}
+                      className="block px-4 py-3 text-gray-700 hover:text-blue-600 font-medium rounded-lg hover:bg-blue-50/50 transition-all duration-300 cursor-pointer"
+                    >
+                      {item.name}
+                    </a>
+                  ) : (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className="block px-4 py-3 text-gray-700 hover:text-blue-600 font-medium rounded-lg hover:bg-blue-50/50 transition-all duration-300"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  )
                 ))}
                 <div className="pt-4 border-t border-gray-200/50 space-y-3">
                   {isAuthenticated ? (

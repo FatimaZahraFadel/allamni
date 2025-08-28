@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { assignmentsAPI, submissionsAPI } from '../../services/api';
 import StudentLayout from '../../components/student/StudentLayout';
 import {
   ChartBarIcon,
@@ -19,62 +20,219 @@ export default function StatisticsPage() {
   const [statsData, setStatsData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPeriod, setSelectedPeriod] = useState('week');
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchStatistics = async () => {
-      try {
-        setIsLoading(true);
-        // Mock data for now - replace with actual API call
-        const mockStats = {
+    if (!authLoading && (!isAuthenticated || !user || user.role !== 'student')) {
+      window.location.href = '/';
+      return;
+    }
+
+    if (isAuthenticated && user && user.role === 'student') {
+      fetchStatistics();
+    }
+  }, [user, isAuthenticated, authLoading]);
+
+  const fetchStatistics = async () => {
+    try {
+      setIsLoading(true);
+      setError('');
+
+      // Fetch real data from backend
+      const [assignments, submissions] = await Promise.all([
+        assignmentsAPI.getStudentAssignments(),
+        submissionsAPI.getSubmissions()
+      ]);
+
+      // Calculate statistics from real data
+      const completedAssignments = submissions.filter(sub => sub.is_graded);
+      const pendingAssignments = assignments.filter(assignment =>
+        !submissions.some(sub => sub.assignment_id === assignment.id)
+      );
+
+      const totalPoints = completedAssignments.reduce((sum, sub) => sum + (sub.grade || 0), 0);
+      const maxPossiblePoints = completedAssignments.reduce((sum, sub) => {
+        const assignment = assignments.find(a => a.id === sub.assignment_id);
+        return sum + (assignment?.max_points || 0);
+      }, 0);
+
+      const accuracyPercentage = maxPossiblePoints > 0
+        ? Math.round((totalPoints / maxPossiblePoints) * 100)
+        : 0;
+
+      // Calculate weekly progress (mock for now, can be enhanced with real date-based data)
+      const weeklyData = generateWeeklyProgress(submissions);
+
+      const calculatedStats = {
           overview: {
-            total_points: 1250,
-            level: 5,
-            assignments_completed: 15,
-            assignments_pending: 3,
-            streak_days: 7,
-            badges_earned: 12,
-            time_spent_minutes: 420,
-            accuracy_percentage: 87
+            total_points: totalPoints,
+            level: Math.floor(totalPoints / 100) + 1, // Simple level calculation
+            assignments_completed: completedAssignments.length,
+            assignments_pending: pendingAssignments.length,
+            streak_days: calculateStreak(submissions),
+            badges_earned: calculateBadges(completedAssignments, accuracyPercentage),
+            time_spent_minutes: estimateTimeSpent(completedAssignments),
+            accuracy_percentage: accuracyPercentage
           },
-          weekly_progress: {
-            days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            points: [120, 150, 80, 200, 180, 90, 130],
-            time_spent: [45, 60, 30, 75, 65, 35, 50]
-          },
-          subject_performance: {
-            writing: { score: 85, exercises: 25, improvement: '+12%' },
-            reading: { score: 92, exercises: 18, improvement: '+8%' },
-            grammar: { score: 78, exercises: 22, improvement: '+15%' },
-            vocabulary: { score: 89, exercises: 20, improvement: '+5%' }
-          },
-          recent_achievements: [
-            { id: 1, title: 'Writing Master', emoji: '✏️', date: '2024-01-15', points: 100 },
-            { id: 2, title: 'Speed Reader', emoji: '📚', date: '2024-01-14', points: 75 },
-            { id: 3, title: 'Grammar Guru', emoji: '📝', date: '2024-01-13', points: 50 }
-          ],
+          weekly_progress: weeklyData,
+          subject_performance: calculateSubjectPerformance(assignments, submissions),
+          recent_achievements: generateAchievements(completedAssignments, accuracyPercentage),
           monthly_goals: {
-            current_month: 'January',
-            points_goal: 2000,
-            points_achieved: 1250,
-            assignments_goal: 20,
-            assignments_completed: 15,
-            streak_goal: 15,
-            current_streak: 7
+            current_month: new Date().toLocaleDateString('en-US', { month: 'long' }),
+            points_goal: 500,
+            points_achieved: totalPoints,
+            assignments_goal: 10,
+            assignments_completed: completedAssignments.length,
+            streak_goal: 7,
+            current_streak: calculateStreak(submissions)
           }
         };
-        
-        setStatsData(mockStats);
+
+        setStatsData(calculatedStats);
       } catch (error) {
         console.error('Error fetching statistics:', error);
+        setError('Failed to load statistics');
       } finally {
         setIsLoading(false);
       }
     };
 
-    if (isAuthenticated && user) {
-      fetchStatistics();
+  // Helper functions for calculations
+  const calculateStreak = (submissions) => {
+    if (!submissions.length) return 0;
+
+    const sortedSubmissions = submissions
+      .filter(sub => sub.submitted_at)
+      .sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
+
+    let streak = 0;
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    for (let i = 0; i < 7; i++) { // Check last 7 days
+      const daySubmissions = sortedSubmissions.filter(sub => {
+        const subDate = new Date(sub.submitted_at);
+        subDate.setHours(0, 0, 0, 0);
+        return subDate.getTime() === currentDate.getTime();
+      });
+
+      if (daySubmissions.length > 0) {
+        streak++;
+      } else {
+        break;
+      }
+
+      currentDate.setDate(currentDate.getDate() - 1);
     }
-  }, [isAuthenticated, user, selectedPeriod]);
+
+    return streak;
+  };
+
+  const calculateBadges = (completedAssignments, accuracy) => {
+    let badges = 0;
+    if (completedAssignments.length >= 5) badges++;
+    if (completedAssignments.length >= 10) badges++;
+    if (accuracy >= 80) badges++;
+    if (accuracy >= 90) badges++;
+    return badges;
+  };
+
+  const estimateTimeSpent = (completedAssignments) => {
+    // Estimate 15 minutes per assignment
+    return completedAssignments.length * 15;
+  };
+
+  const generateWeeklyProgress = (submissions) => {
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const points = [];
+    const timeSpent = [];
+
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      date.setHours(0, 0, 0, 0);
+
+      const daySubmissions = submissions.filter(sub => {
+        const subDate = new Date(sub.submitted_at);
+        subDate.setHours(0, 0, 0, 0);
+        return subDate.getTime() === date.getTime();
+      });
+
+      const dayPoints = daySubmissions.reduce((sum, sub) => sum + (sub.grade || 0), 0);
+      points.push(dayPoints);
+      timeSpent.push(daySubmissions.length * 15); // 15 min per submission
+    }
+
+    return { days, points, time_spent: timeSpent };
+  };
+
+  const calculateSubjectPerformance = (assignments, submissions) => {
+    const subjects = {};
+
+    assignments.forEach(assignment => {
+      const type = assignment.assignment_type || 'general';
+      if (!subjects[type]) {
+        subjects[type] = { total: 0, count: 0, submissions: [] };
+      }
+
+      const submission = submissions.find(sub => sub.assignment_id === assignment.id);
+      if (submission && submission.is_graded) {
+        const score = (submission.grade / assignment.max_points) * 100;
+        subjects[type].total += score;
+        subjects[type].count++;
+        subjects[type].submissions.push(submission);
+      }
+    });
+
+    const performance = {};
+    Object.keys(subjects).forEach(subject => {
+      if (subjects[subject].count > 0) {
+        performance[subject] = {
+          score: Math.round(subjects[subject].total / subjects[subject].count),
+          exercises: subjects[subject].count,
+          improvement: '+5%' // Placeholder - would need historical data
+        };
+      }
+    });
+
+    return performance;
+  };
+
+  const generateAchievements = (completedAssignments, accuracy) => {
+    const achievements = [];
+
+    if (completedAssignments.length >= 5) {
+      achievements.push({
+        id: 1,
+        title: 'Assignment Master',
+        emoji: '🎯',
+        date: new Date().toISOString().split('T')[0],
+        points: 50
+      });
+    }
+
+    if (accuracy >= 90) {
+      achievements.push({
+        id: 2,
+        title: 'Accuracy Expert',
+        emoji: '🎯',
+        date: new Date().toISOString().split('T')[0],
+        points: 75
+      });
+    }
+
+    if (completedAssignments.length >= 10) {
+      achievements.push({
+        id: 3,
+        title: 'Dedicated Learner',
+        emoji: '📚',
+        date: new Date().toISOString().split('T')[0],
+        points: 100
+      });
+    }
+
+    return achievements;
+  };
 
   if (authLoading || isLoading) {
     return (
@@ -94,6 +252,25 @@ export default function StatisticsPage() {
       <StudentLayout>
         <div className="text-center py-12">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Please log in to view statistics</h2>
+        </div>
+      </StudentLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <StudentLayout>
+        <div className="text-center py-12">
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6 max-w-md mx-auto">
+            <h2 className="text-xl font-bold text-red-800 mb-2">Error Loading Statistics</h2>
+            <p className="text-red-600 mb-4">{error}</p>
+            <button
+              onClick={() => fetchStatistics()}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200"
+            >
+              Try Again
+            </button>
+          </div>
         </div>
       </StudentLayout>
     );
