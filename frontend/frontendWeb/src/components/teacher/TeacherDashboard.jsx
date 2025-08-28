@@ -256,16 +256,20 @@ export default function TeacherDashboard() {
             <p className="text-sm text-gray-500">Create a new school</p>
           </Link>
 
-          <Link to="/teacher/classes" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200 text-center block">
-            <AcademicCapIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-            <p className="font-medium text-gray-900">Add Class</p>
-            <p className="text-sm text-gray-500">Create a new class</p>
+          <Link to="/teacher/classes" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200 flex items-center space-x-3">
+            <AcademicCapIcon className="h-8 w-8 text-gray-400" />
+            <div>
+              <p className="font-medium text-gray-900">New Class</p>
+              <p className="text-sm text-gray-500">Create a new class</p>
+            </div>
           </Link>
 
-          <Link to="/teacher/assignments" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200 text-center block">
-            <DocumentTextIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-            <p className="font-medium text-gray-900">New Assignment</p>
-            <p className="text-sm text-gray-500">Create assignment</p>
+          <Link to="/teacher/assignments" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200 flex items-center space-x-3">
+            <DocumentTextIcon className="h-8 w-8 text-gray-400" />
+            <div>
+              <p className="font-medium text-gray-900">New Assignment</p>
+              <p className="text-sm text-gray-500">Create assignment</p>
+            </div>
           </Link>
 
           <Link to="/teacher/analytics" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200 text-center block">

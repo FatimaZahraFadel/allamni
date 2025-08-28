@@ -111,8 +111,8 @@ export default function TeacherLayout({ children }) {
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gradient-to-b from-blue-50 via-purple-50 to-indigo-50 border-r border-blue-200 px-6 shadow-xl">
-          <div className="flex h-16 shrink-0 items-center justify-center">
-            <div className="text-center">
+          <div className="flex h-16 shrink-0 items-center">
+            <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">3allamni</h1>
               <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Teacher Portal</span>
             </div>

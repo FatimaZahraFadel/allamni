@@ -185,7 +185,7 @@ export default function ClassesPage() {
                     </button>
                     <a
                       href={`/teacher/classes/${classItem.id}`}
-                      className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 text-white px-4 py-2 rounded-xl font-bold hover:from-green-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-300 text-sm text-center flex items-center justify-center"
+                      className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-xl font-bold hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 text-sm text-center flex items-center justify-center"
                     >
                       View Details
                     </a>
