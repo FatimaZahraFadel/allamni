@@ -1,0 +1,16 @@
+# Node.js
+node_modules/
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VS Code settings
+.vscode/
+
+# Other
+.DS_Store
