@@ -122,7 +122,7 @@ cp .env.example .env
 ```bash
 # Create MySQL database
 mysql -u root -p
-CREATE DATABASE allamni_db;
+CREATE DATABASE education;
 exit
 
 # Run migrations
