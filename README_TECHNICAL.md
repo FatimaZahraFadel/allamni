@@ -102,7 +102,7 @@ Users (teachers/students)
 ├── email (unique)
 ├── password_hash
 ├── role (TEACHER/STUDENT)
-├── language_preference (ENGLISH/FRENCH/ARABIC)
+├── language_preference (ENGLISH/FRENCH/ARABIC/MOROCCAN_TAMAZIGHT)
 └── is_active
 
 Schools
@@ -263,7 +263,7 @@ VITE_API_BASE_URL=http://localhost:8000
 - **Dashboard**: Progress overview, recent activities
 - **Learning Modules**: Dictation, Reading, Mini Quests
 - **Progress Tracking**: Completion rates, scores
-- **Multilingual Support**: Arabic, French, English
+- **Multilingual Support**: Arabic, French, English, Tamazight
 
 ### Teacher Features
 - **School Management**: Create and manage multiple schools
@@ -276,7 +276,7 @@ VITE_API_BASE_URL=http://localhost:8000
 - **Speech Recognition**: For dictation exercises
 - **Text Analysis**: Automated essay scoring
 - **Personalized Learning**: Adaptive difficulty
-- **Language Processing**: Multi-language support
+- **Language Processing**: Multi-language support (English, French, Arabic, Tamazight)
 
 ## Testing
 

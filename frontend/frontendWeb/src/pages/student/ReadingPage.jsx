@@ -245,14 +245,14 @@ export default function ReadingPage() {
           <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full px-6 py-3 mb-4 border-2 border-blue-200">
             <span className="text-2xl">📚</span>
             <span className="text-lg font-bold text-blue-700">
-              Reading Comprehension
+              {t('student.readingComprehension')}
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-            Discover Amazing Stories
+            {t('student.discoverAmazingStories')}
           </h1>
           <p className="text-gray-600 text-lg">
-            Read engaging stories and test your understanding!
+            {t('student.readEngagingStories')}
           </p>
         </div>
 

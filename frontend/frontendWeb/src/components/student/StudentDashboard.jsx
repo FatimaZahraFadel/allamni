@@ -38,14 +38,22 @@ export default function StudentDashboard() {
           weekly_progress: 1250,
           next_level_points: 1500,
           recent_achievements: [
-            { id: 1, title: 'Writing Master', emoji: '✏️', earned_at: '2024-01-15', description: 'Completed 10 writing exercises!' },
-            { id: 2, title: 'Speed Reader', emoji: '📚', earned_at: '2024-01-14', description: 'Read 5 texts in record time!' },
-            { id: 3, title: 'Grammar Guru', emoji: '📝', earned_at: '2024-01-13', description: 'Perfect grammar score 3 times!' }
+            { id: 1, title: t('student.writingMaster'), emoji: '✏️', earned_at: '2024-01-15', description: t('student.completedWritingExercises') },
+            { id: 2, title: t('student.speedReader'), emoji: '📚', earned_at: '2024-01-14', description: t('student.readTextsInRecordTime') },
+            { id: 3, title: t('student.grammarGuru'), emoji: '📝', earned_at: '2024-01-13', description: t('student.perfectGrammarScore') }
           ],
           daily_streak: {
             current: 7,
             best: 15,
-            days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            days: [
+              t('student.monday').substring(0, 3),
+              t('student.tuesday').substring(0, 3),
+              t('student.wednesday').substring(0, 3),
+              t('student.thursday').substring(0, 3),
+              t('student.friday').substring(0, 3),
+              t('student.saturday').substring(0, 3),
+              t('student.sunday').substring(0, 3)
+            ],
             completed: [true, true, true, true, true, true, true]
           }
         };
@@ -142,15 +150,15 @@ export default function StudentDashboard() {
                 {dashboardData.level}
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-800">Level {dashboardData.level}</h3>
+                <h3 className="text-xl font-bold text-gray-800">{t('student.level')} {dashboardData.level}</h3>
                 <p className="text-gray-600">
-                  {dashboardData.next_level_points - dashboardData.total_points} XP to Level {dashboardData.level + 1}
+                  {dashboardData.next_level_points - dashboardData.total_points} {t('student.xpToNextLevel')} {dashboardData.level + 1}
                 </p>
               </div>
             </div>
             <div className="text-right">
               <div className="text-2xl font-bold text-blue-600">{dashboardData.total_points} XP</div>
-              <div className="text-sm text-gray-500">Total Points</div>
+              <div className="text-sm text-gray-500">{t('student.totalPointsLabel')}</div>
             </div>
           </div>
 
@@ -165,8 +173,8 @@ export default function StudentDashboard() {
               </div>
             </div>
             <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>Level {dashboardData.level}</span>
-              <span>Level {dashboardData.level + 1}</span>
+              <span>{t('student.level')} {dashboardData.level}</span>
+              <span>{t('student.level')} {dashboardData.level + 1}</span>
             </div>
           </div>
         </div>
@@ -219,7 +227,7 @@ export default function StudentDashboard() {
           <div className="flex items-center space-x-3 mb-4">
             <div className="text-3xl">🎯</div>
             <div>
-              <h3 className="text-xl font-bold text-gray-800">Weekly Goal</h3>
+              <h3 className="text-xl font-bold text-gray-800">{t('student.weeklyGoal')}</h3>
               <p className="text-gray-600">{dashboardData.weekly_progress} / {dashboardData.weekly_goal} XP</p>
             </div>
           </div>
@@ -378,7 +386,7 @@ export default function StudentDashboard() {
         <div className="flex items-center space-x-3 mb-4">
           <div className="text-3xl animate-bounce">💡</div>
           <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-            Daily Learning Tip
+            {t('student.dailyLearningTip')}
           </h2>
           <div className="flex-1"></div>
           <div className="text-2xl animate-pulse">🌟</div>
@@ -386,18 +394,17 @@ export default function StudentDashboard() {
 
         <div className="bg-white rounded-2xl p-4 border-2 border-purple-200 mb-4">
           <p className="text-gray-700 text-lg leading-relaxed">
-            "Practice a little bit every day! Even 10 minutes of learning can make a big difference.
-            You're doing amazing - keep up the great work! 🚀"
+            {t('student.dailyTipText')}
           </p>
         </div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <HeartIcon className="h-5 w-5 text-pink-500" />
-            <span className="text-pink-600 font-medium">You've got this!</span>
+            <span className="text-pink-600 font-medium">{t('student.youveGotThis')}</span>
           </div>
           <div className="flex items-center space-x-1">
-            <span className="text-sm text-purple-600">Tip of the day</span>
+            <span className="text-sm text-purple-600">{t('student.tipOfTheDay')}</span>
             <div className="w-2 h-2 bg-purple-400 rounded-full animate-ping"></div>
           </div>
         </div>
@@ -411,7 +418,7 @@ export default function StudentDashboard() {
             <h2 className="text-2xl font-bold text-gray-800">{t('student.yourAssignments')}</h2>
             {dashboardData.assignments_pending > 0 && (
               <div className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-bold animate-pulse">
-                {dashboardData.assignments_pending} new!
+                {dashboardData.assignments_pending} {t('student.newAssignments')}
               </div>
             )}
           </div>
@@ -442,7 +449,7 @@ export default function StudentDashboard() {
               <p className="text-sm text-blue-600">{t('student.assignmentsPending')}</p>
               {dashboardData.assignments_pending > 0 && (
                 <div className="mt-2 text-xs text-blue-500 font-medium animate-pulse">
-                  Let's complete them together! 💪
+                  {t('student.letsCompleteTogether')}
                 </div>
               )}
             </div>

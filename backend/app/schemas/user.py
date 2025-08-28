@@ -15,6 +15,7 @@ class LanguagePreference(str, Enum):
     ARABIC = "ARABIC"
     FRENCH = "FRENCH"
     ENGLISH = "ENGLISH"
+    TAMAZIGHT = "TAMAZIGHT"
 
 class SubscriptionStatus(str, Enum):
     ACTIVE = "active"

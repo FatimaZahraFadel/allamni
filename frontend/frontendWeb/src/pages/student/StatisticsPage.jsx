@@ -240,7 +240,7 @@ export default function StatisticsPage() {
         <div className="flex items-center justify-center min-h-96">
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading your statistics...</p>
+            <p className="text-gray-600">{t('student.loadingStatistics')}</p>
           </div>
         </div>
       </StudentLayout>
@@ -251,7 +251,7 @@ export default function StatisticsPage() {
     return (
       <StudentLayout>
         <div className="text-center py-12">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Please log in to view statistics</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t('student.pleaseLoginToView')}</h2>
         </div>
       </StudentLayout>
     );
@@ -262,13 +262,13 @@ export default function StatisticsPage() {
       <StudentLayout>
         <div className="text-center py-12">
           <div className="bg-red-50 border border-red-200 rounded-xl p-6 max-w-md mx-auto">
-            <h2 className="text-xl font-bold text-red-800 mb-2">Error Loading Statistics</h2>
+            <h2 className="text-xl font-bold text-red-800 mb-2">{t('student.errorLoadingStatistics')}</h2>
             <p className="text-red-600 mb-4">{error}</p>
             <button
               onClick={() => fetchStatistics()}
               className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200"
             >
-              Try Again
+              {t('student.tryAgain')}
             </button>
           </div>
         </div>
@@ -288,10 +288,10 @@ export default function StatisticsPage() {
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-            Your Learning Journey
+            {t('student.yourLearningJourney')}
           </h1>
           <p className="text-gray-600 text-lg">
-            Track your progress and celebrate your achievements!
+            {t('student.trackProgressAndCelebrate')}
           </p>
         </div>
 

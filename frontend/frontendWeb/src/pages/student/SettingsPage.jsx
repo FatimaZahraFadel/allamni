@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAccessibility } from '../../contexts/AccessibilityContext';
+import { useLanguageSettings } from '../../contexts/LanguageContext';
 import { useTranslation } from 'react-i18next';
 import StudentLayout from '../../components/student/StudentLayout';
 import {
@@ -25,9 +26,15 @@ export default function SettingsPage() {
     changeFontSize,
     resetToDefaults
   } = useAccessibility();
-  const { t, i18n } = useTranslation();
-
-  const [currentLanguage, setCurrentLanguage] = useState(i18n.language || 'en');
+  const { t } = useTranslation();
+  const {
+    displayLanguage,
+    learningLanguage,
+    displayLanguages,
+    learningLanguages,
+    changeDisplayLanguage,
+    changeLearningLanguage
+  } = useLanguageSettings();
   const [showSaveMessage, setShowSaveMessage] = useState(false);
 
   // Authentication check
@@ -50,24 +57,10 @@ export default function SettingsPage() {
 
   // No need for useEffect or manual handlers - the context handles everything
 
-  const handleLanguageChange = (lng) => {
-    setCurrentLanguage(lng);
-    i18n.changeLanguage(lng);
-    document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = lng;
-    localStorage.setItem('language', lng);
-  };
-
   const handleSaveSettings = () => {
     setShowSaveMessage(true);
     setTimeout(() => setShowSaveMessage(false), 3000);
   };
-
-  const languages = [
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'fr', name: 'Français', flag: '🇫🇷' },
-    { code: 'ar', name: 'العربية', flag: '🇲🇦' }
-  ];
 
   const readingSpeeds = [
     { value: 'slow', label: t('student.slow'), emoji: '🐌' },
@@ -258,26 +251,67 @@ export default function SettingsPage() {
             <h2 className="text-2xl font-bold text-gray-800">{t('student.languageSettings')}</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {languages.map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() => handleLanguageChange(lang.code)}
-                className={`p-6 rounded-2xl border-2 transition-all duration-200 transform hover:scale-105 ${
-                  currentLanguage === lang.code
-                    ? 'bg-gradient-to-r from-blue-100 to-purple-100 border-blue-400 text-blue-800'
-                    : 'bg-white border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-50'
-                }`}
-              >
-                <div className="text-4xl mb-2">{lang.flag}</div>
-                <div className="font-bold text-lg">{lang.name}</div>
-                {currentLanguage === lang.code && (
-                  <div className="mt-2">
-                    <CheckIcon className="h-6 w-6 text-blue-600 mx-auto" />
-                  </div>
-                )}
-              </button>
-            ))}
+          {/* Display Language Section */}
+          <div className="mb-8">
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="text-2xl">🖥️</div>
+              <h3 className="text-xl font-bold text-gray-800">{t('student.displayLanguage')}</h3>
+            </div>
+            <p className="text-gray-600 mb-4">{t('student.interfaceLanguageDesc')}</p>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {displayLanguages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => changeDisplayLanguage(lang.code)}
+                  className={`p-4 rounded-2xl border-2 transition-all duration-200 transform hover:scale-105 ${
+                    displayLanguage === lang.code
+                      ? 'bg-gradient-to-r from-blue-100 to-purple-100 border-blue-400 text-blue-800'
+                      : 'bg-white border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-50'
+                  }`}
+                >
+                  <div className="text-3xl mb-2">{lang.flag}</div>
+                  <div className="font-bold text-sm">{lang.nativeName}</div>
+                  {displayLanguage === lang.code && (
+                    <div className="mt-2">
+                      <CheckIcon className="h-5 w-5 text-blue-600 mx-auto" />
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Learning Language Section */}
+          <div>
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="text-2xl">📚</div>
+              <h3 className="text-xl font-bold text-gray-800">{t('student.learningLanguage')}</h3>
+            </div>
+            <p className="text-gray-600 mb-4">{t('student.targetLanguageDesc')}</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {learningLanguages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => changeLearningLanguage(lang.code)}
+                  className={`p-6 rounded-2xl border-2 transition-all duration-200 transform hover:scale-105 ${
+                    learningLanguage === lang.code
+                      ? 'bg-gradient-to-r from-green-100 to-blue-100 border-green-400 text-green-800'
+                      : 'bg-white border-gray-200 text-gray-700 hover:border-green-300 hover:bg-green-50'
+                  }`}
+                >
+                  <div className="text-4xl mb-2">{lang.flag}</div>
+                  <div className="font-bold text-lg">{lang.nativeName}</div>
+                  <div className="text-sm text-gray-600 mt-1">{lang.name}</div>
+                  {learningLanguage === lang.code && (
+                    <div className="mt-2">
+                      <CheckIcon className="h-6 w-6 text-green-600 mx-auto" />
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 

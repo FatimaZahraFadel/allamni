@@ -1286,10 +1286,10 @@ export default function QuestsPage() {
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent mb-2">
-            Lightning Learning Quests
+            {t('student.lightningLearningQuests')}
           </h1>
           <p className="text-gray-600 text-lg mb-4">
-            Complete fun challenges and earn amazing rewards!
+            {t('student.completeFunChallenges')}
           </p>
           <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border-2 border-purple-200 max-w-md mx-auto">
             <div className="flex items-center justify-center space-x-2">

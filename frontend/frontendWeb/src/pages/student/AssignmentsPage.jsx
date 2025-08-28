@@ -185,10 +185,10 @@ export default function AssignmentsPage() {
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 bg-clip-text text-transparent mb-2">
-            Your School Assignments
+            {t('student.yourAssignments')}
           </h1>
           <p className="text-gray-600 text-lg">
-            Complete your homework and track your progress!
+            {t('student.viewAndCompleteAssignments')}
           </p>
         </div>
 

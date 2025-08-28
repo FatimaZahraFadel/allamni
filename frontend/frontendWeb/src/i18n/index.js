@@ -6,11 +6,13 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import en from '../locales/en.json';
 import ar from '../locales/ar.json';
 import fr from '../locales/fr.json';
+import tzm from '../locales/tzm.json';
 
 const resources = {
   en: { translation: en },
   ar: { translation: ar },
   fr: { translation: fr },
+  tzm: { translation: tzm },
 };
 
 i18n

@@ -9,7 +9,7 @@
 - **AI-Powered Learning**: Intelligent feedback for writing and reading exercises
 - **Gamified Experience**: Points, levels, badges, and achievements to motivate learning
 - **Multi-Role Support**: Separate interfaces for students, teachers, and parents
-- **Multilingual**: Full support for English, French, and Arabic (RTL)
+- **Multilingual**: Full support for English, French, Arabic (RTL), and Tamazight
 - **Accessibility First**: Dyslexia-friendly fonts, high contrast, and reading speed controls
 
 ## 🚀 Key Features

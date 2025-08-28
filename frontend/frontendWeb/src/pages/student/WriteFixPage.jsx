@@ -133,7 +133,7 @@ export default function WriteFixPage() {
             {t('student.uploadImageAndGetFeedback')}
           </h1>
           <p className="text-gray-600 text-lg">
-            Take a photo of your handwriting and get instant AI feedback!
+            {t('student.takeClearPhoto')}
           </p>
         </div>
 
@@ -141,8 +141,8 @@ export default function WriteFixPage() {
         {inputMode === 'choose' && (
           <div className="bg-white rounded-3xl p-8 border-2 border-gray-100 shadow-lg">
             <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">Choose Your Input Method</h3>
-              <p className="text-gray-600">How would you like to provide your text for feedback?</p>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">{t('student.chooseInputMethod')}</h3>
+              <p className="text-gray-600">{t('student.howToProvideText')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -155,9 +155,9 @@ export default function WriteFixPage() {
                   <div className="bg-blue-100 rounded-full p-4 w-20 h-20 mx-auto mb-4 group-hover:bg-blue-200 transition-colors duration-300">
                     <PhotoIcon className="h-12 w-12 text-blue-600 mx-auto" />
                   </div>
-                  <h4 className="text-xl font-bold text-gray-800 mb-2">Upload Image</h4>
-                  <p className="text-gray-600 text-sm">Take a photo of your handwritten text</p>
-                  <div className="mt-4 text-blue-600 font-medium">📸 Camera Ready</div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">{t('student.uploadImageTitle')}</h4>
+                  <p className="text-gray-600 text-sm">{t('student.uploadImageDesc')}</p>
+                  <div className="mt-4 text-blue-600 font-medium">{t('student.cameraReady')}</div>
                 </div>
               </button>
 
@@ -170,9 +170,9 @@ export default function WriteFixPage() {
                   <div className="bg-green-100 rounded-full p-4 w-20 h-20 mx-auto mb-4 group-hover:bg-green-200 transition-colors duration-300">
                     <PencilIcon className="h-12 w-12 text-green-600 mx-auto" />
                   </div>
-                  <h4 className="text-xl font-bold text-gray-800 mb-2">Type Text</h4>
-                  <p className="text-gray-600 text-sm">Write your text directly here</p>
-                  <div className="mt-4 text-green-600 font-medium">⌨️ Keyboard Ready</div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">{t('student.typeTextTitle')}</h4>
+                  <p className="text-gray-600 text-sm">{t('student.typeTextDesc')}</p>
+                  <div className="mt-4 text-green-600 font-medium">{t('student.keyboardReady')}</div>
                 </div>
               </button>
             </div>
@@ -183,7 +183,7 @@ export default function WriteFixPage() {
         {inputMode === 'upload' && (
           <div className="bg-white rounded-3xl p-8 border-2 border-gray-100 shadow-lg">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-gray-800">Upload Your Handwriting</h3>
+              <h3 className="text-xl font-bold text-gray-800">{t('student.uploadYourHandwriting')}</h3>
               <button
                 onClick={() => {
                   setInputMode('choose');
@@ -193,7 +193,7 @@ export default function WriteFixPage() {
                 }}
                 className="text-gray-500 hover:text-gray-700 font-medium"
               >
-                ← Back to options
+                {t('student.backToOptions')}
               </button>
             </div>
 
@@ -201,11 +201,11 @@ export default function WriteFixPage() {
               {!imagePreview ? (
                 <div className="border-3 border-dashed border-blue-300 rounded-2xl p-12 hover:border-blue-400 transition-colors duration-200">
                   <PhotoIcon className="h-16 w-16 text-blue-400 mx-auto mb-4" />
-                  <h4 className="text-xl font-bold text-gray-800 mb-2">Choose Your Photo</h4>
-                  <p className="text-gray-600 mb-6">Take a clear photo of your handwritten text</p>
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">{t('student.chooseYourPhoto')}</h4>
+                  <p className="text-gray-600 mb-6">{t('student.takeClearPhoto')}</p>
                   <label className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl py-3 px-6 font-bold text-lg cursor-pointer hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
                     <PhotoIcon className="h-6 w-6" />
-                    <span>Choose Photo</span>
+                    <span>{t('student.choosePhoto')}</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -261,7 +261,7 @@ export default function WriteFixPage() {
         {inputMode === 'type' && (
           <div className="bg-white rounded-3xl p-8 border-2 border-gray-100 shadow-lg">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-gray-800">Type Your Text</h3>
+              <h3 className="text-xl font-bold text-gray-800">{t('student.typeYourText')}</h3>
               <button
                 onClick={() => {
                   setInputMode('choose');
@@ -270,23 +270,23 @@ export default function WriteFixPage() {
                 }}
                 className="text-gray-500 hover:text-gray-700 font-medium"
               >
-                ← Back to options
+                {t('student.backToOptions')}
               </button>
             </div>
 
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Write your text here:
+                  {t('student.writeTextHere')}
                 </label>
                 <textarea
                   value={typedText}
                   onChange={(e) => setTypedText(e.target.value)}
-                  placeholder="Type your text here and get instant AI feedback..."
+                  placeholder={t('student.typeTextPlaceholder')}
                   className="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl focus:border-blue-400 focus:outline-none resize-none text-lg"
                 />
                 <div className="text-right text-sm text-gray-500 mt-2">
-                  {typedText.length} characters
+                  {typedText.length} {t('student.characters')}
                 </div>
               </div>
 
@@ -299,7 +299,7 @@ export default function WriteFixPage() {
                   {isAnalyzing ? (
                     <>
                       <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
-                      <span>Analyzing...</span>
+                      <span>{t('student.analyzing')}</span>
                     </>
                   ) : (
                     <>
@@ -612,7 +612,7 @@ export default function WriteFixPage() {
                     onClick={() => setShowMiniLesson(false)}
                     className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl py-4 px-6 font-bold hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
                   >
-                    Got it! 👍
+                    {t('student.gotIt')}
                   </button>
                   <button
                     onClick={() => {
@@ -621,7 +621,7 @@ export default function WriteFixPage() {
                     }}
                     className="px-6 py-4 bg-yellow-100 text-yellow-700 rounded-2xl font-bold hover:bg-yellow-200 transition-all duration-200 border-2 border-yellow-300"
                   >
-                    🎯 Practice
+                    {t('student.practice')}
                   </button>
                 </div>
               </div>

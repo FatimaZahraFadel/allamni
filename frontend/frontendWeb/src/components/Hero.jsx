@@ -23,52 +23,51 @@ export default function Hero() {
           >
             <div className="inline-flex items-center space-x-2 glass-card rounded-full px-6 py-3 mb-8">
               <span className="text-2xl">🤖</span>
-              <span className="text-white font-medium">Next-Gen AI Learning Platform</span>
+              <span className="text-white font-medium">{t('hero.nextGenPlatform')}</span>
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
             </div>
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight">
-              Master Languages with
+              {t('hero.title')}
               <span className="block bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent">
-                AI-Powered Learning
+                {t('hero.titleHighlight')}
               </span>
             </h1>
 
             <p className="text-xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Experience personalized education with advanced AI that adapts to your learning style.
-              From writing correction to voice recognition - unlock your potential with 3allamni.
+              {t('hero.subtitle')}
             </p>
 
             {/* Stats Section */}
             <div className="flex flex-wrap justify-center gap-8 mb-12">
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">10K+</div>
-                <div className="text-white/70 text-sm">Active Students</div>
+                <div className="text-white/70 text-sm">{t('hero.activeStudents')}</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">95%</div>
-                <div className="text-white/70 text-sm">Success Rate</div>
+                <div className="text-white/70 text-sm">{t('hero.successRate')}</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">24/7</div>
-                <div className="text-white/70 text-sm">AI Support</div>
+                <div className="text-white/70 text-sm">{t('hero.aiSupport')}</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-white">3</div>
-                <div className="text-white/70 text-sm">Languages</div>
+                <div className="text-3xl font-bold text-white">4</div>
+                <div className="text-white/70 text-sm">{t('hero.languages')}</div>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-lg px-12 py-4 rounded-full font-bold hover:scale-105 transform transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 flex items-center space-x-3">
                 <span>🚀</span>
-                <span>Start Learning Free</span>
+                <span>{t('hero.cta')}</span>
                 <span className="bg-white/20 px-2 py-1 rounded-full text-sm">AI-Powered</span>
               </button>
 
               <button className="glass-button text-white text-lg px-10 py-4 rounded-full font-bold flex items-center space-x-3 hover:scale-105 transform transition-all duration-300 border border-white/20">
                 <PlayIcon className="h-6 w-6" />
-                <span>Watch Demo</span>
+                <span>{t('hero.cta_secondary')}</span>
                 <span className="text-xs bg-green-500 px-2 py-1 rounded-full">2 min</span>
               </button>
             </div>
@@ -77,15 +76,15 @@ export default function Hero() {
             <div className="mt-12 flex flex-wrap justify-center items-center gap-8 opacity-70">
               <div className="flex items-center space-x-2 text-white/60">
                 <span className="text-green-400">✓</span>
-                <span className="text-sm">No Credit Card Required</span>
+                <span className="text-sm">{t('hero.noCreditCard')}</span>
               </div>
               <div className="flex items-center space-x-2 text-white/60">
                 <span className="text-green-400">✓</span>
-                <span className="text-sm">Free Forever Plan</span>
+                <span className="text-sm">{t('hero.freeForever')}</span>
               </div>
               <div className="flex items-center space-x-2 text-white/60">
                 <span className="text-green-400">✓</span>
-                <span className="text-sm">Setup in 30 seconds</span>
+                <span className="text-sm">{t('hero.setupIn30Seconds')}</span>
               </div>
             </div>
           </motion.div>
@@ -117,9 +116,9 @@ export default function Hero() {
                     <div className="text-6xl mr-4 animate-pulse">🤖</div>
                     <div className="text-left">
                       <h3 className="text-4xl font-bold bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
-                        AI Learning Engine
+                        {t('hero.aiLearningEngine')}
                       </h3>
-                      <p className="text-lg opacity-90">Powered by Advanced Machine Learning</p>
+                      <p className="text-lg opacity-90">{t('hero.poweredByML')}</p>
                     </div>
                   </div>
 
@@ -127,32 +126,32 @@ export default function Hero() {
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
                     <div className="glass-card rounded-2xl p-6 hover:scale-105 transition-transform duration-300">
                       <div className="text-4xl mb-3">🧠</div>
-                      <h4 className="font-bold mb-2">Smart Analysis</h4>
-                      <p className="text-sm opacity-80">AI analyzes your writing patterns</p>
+                      <h4 className="font-bold mb-2">{t('hero.smartAnalysis')}</h4>
+                      <p className="text-sm opacity-80">{t('hero.smartAnalysisDesc')}</p>
                       <div className="mt-3 bg-blue-500/20 rounded-full h-2">
                         <div className="bg-blue-400 h-2 rounded-full w-4/5 animate-pulse"></div>
                       </div>
                     </div>
                     <div className="glass-card rounded-2xl p-6 hover:scale-105 transition-transform duration-300">
                       <div className="text-4xl mb-3">🎯</div>
-                      <h4 className="font-bold mb-2">Personalized</h4>
-                      <p className="text-sm opacity-80">Adapts to your learning style</p>
+                      <h4 className="font-bold mb-2">{t('hero.personalized')}</h4>
+                      <p className="text-sm opacity-80">{t('hero.personalizedDesc')}</p>
                       <div className="mt-3 bg-orange-500/20 rounded-full h-2">
                         <div className="bg-orange-400 h-2 rounded-full w-3/5 animate-pulse"></div>
                       </div>
                     </div>
                     <div className="glass-card rounded-2xl p-6 hover:scale-105 transition-transform duration-300">
                       <div className="text-4xl mb-3">⚡</div>
-                      <h4 className="font-bold mb-2">Real-time</h4>
-                      <p className="text-sm opacity-80">Instant feedback & corrections</p>
+                      <h4 className="font-bold mb-2">{t('hero.realTime')}</h4>
+                      <p className="text-sm opacity-80">{t('hero.realTimeDesc')}</p>
                       <div className="mt-3 bg-green-500/20 rounded-full h-2">
                         <div className="bg-green-400 h-2 rounded-full w-5/6 animate-pulse"></div>
                       </div>
                     </div>
                     <div className="glass-card rounded-2xl p-6 hover:scale-105 transition-transform duration-300">
                       <div className="text-4xl mb-3">📈</div>
-                      <h4 className="font-bold mb-2">Progress</h4>
-                      <p className="text-sm opacity-80">Track improvement over time</p>
+                      <h4 className="font-bold mb-2">{t('hero.progress')}</h4>
+                      <p className="text-sm opacity-80">{t('hero.progressDesc')}</p>
                       <div className="mt-3 bg-cyan-500/20 rounded-full h-2">
                         <div className="bg-cyan-400 h-2 rounded-full w-4/6 animate-pulse"></div>
                       </div>
@@ -163,11 +162,11 @@ export default function Hero() {
                   <div className="mt-8 flex items-center justify-center space-x-4">
                     <div className="flex items-center space-x-2">
                       <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="text-sm opacity-80">AI Engine Active</span>
+                      <span className="text-sm opacity-80">{t('hero.aiEngineActive')}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
-                      <span className="text-sm opacity-80">Processing 1.2M+ words/day</span>
+                      <span className="text-sm opacity-80">{t('hero.processingWords')}</span>
                     </div>
                   </div>
                 </div>

@@ -138,22 +138,17 @@ export default function Features() {
                 </p>
               </div>
               <div className="space-y-4">
-                <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                  <div className="w-3 h-3 bg-yellow-400 rounded-full shadow-lg"></div>
-                  <span className="text-white font-medium">Interactive writing exercises</span>
-                </div>
-                <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                  <div className="w-3 h-3 bg-green-400 rounded-full shadow-lg"></div>
-                  <span className="text-white font-medium">Gamified learning with rewards</span>
-                </div>
-                <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                  <div className="w-3 h-3 bg-pink-400 rounded-full shadow-lg"></div>
-                  <span className="text-white font-medium">Instant AI feedback</span>
-                </div>
-                <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                  <div className="w-3 h-3 bg-blue-400 rounded-full shadow-lg"></div>
-                  <span className="text-white font-medium">Progress tracking</span>
-                </div>
+                {t('features.student_features', { returnObjects: true }).map((feature, index) => (
+                  <div key={index} className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                    <div className={`w-3 h-3 rounded-full shadow-lg ${
+                      index === 0 ? 'bg-yellow-400' :
+                      index === 1 ? 'bg-green-400' :
+                      index === 2 ? 'bg-pink-400' :
+                      'bg-blue-400'
+                    }`}></div>
+                    <span className="text-white font-medium">{feature}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -182,22 +177,18 @@ export default function Features() {
                 </p>
               </div>
               <div className="space-y-4">
-                <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                  <div className="w-3 h-3 bg-yellow-400 rounded-full shadow-lg"></div>
-                  <span className="text-white font-medium">Classroom management</span>
-                </div>
-                <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                  <div className="w-3 h-3 bg-orange-400 rounded-full shadow-lg"></div>
-                  <span className="text-white font-medium">Assignment creation</span>
-                </div>
-                <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                  <div className="w-3 h-3 bg-pink-400 rounded-full shadow-lg"></div>
-                  <span className="text-white font-medium">Student analytics</span>
-                </div>
-                <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                  <div className="w-3 h-3 bg-blue-400 rounded-full shadow-lg"></div>
-                  <span className="text-white font-medium">Bulk management tools</span>
-                </div>
+                {t('features.teacher_features', { returnObjects: true }).map((feature, index) => (
+                  <div key={index} className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                    <div className={`w-3 h-3 rounded-full shadow-lg ${
+                      index === 0 ? 'bg-yellow-400' :
+                      index === 1 ? 'bg-orange-400' :
+                      index === 2 ? 'bg-pink-400' :
+                      index === 3 ? 'bg-blue-400' :
+                      'bg-green-400'
+                    }`}></div>
+                    <span className="text-white font-medium">{feature}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </motion.div>

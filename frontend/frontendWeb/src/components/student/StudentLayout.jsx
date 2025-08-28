@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { useLanguageSettings } from '../../contexts/LanguageContext';
 import {
   Bars3Icon,
   XMarkIcon,
@@ -77,7 +78,13 @@ function classNames(...classes) {
 export default function StudentLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, logout } = useAuth();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const {
+    displayLanguage,
+    changeDisplayLanguage,
+    displayLanguages,
+    isRTL
+  } = useLanguageSettings();
   const location = useLocation();
   const navigation = getNavigation(location.pathname, t);
 
@@ -86,23 +93,13 @@ export default function StudentLayout({ children }) {
     window.location.href = '/';
   };
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    // Update document direction for RTL languages
-    document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = lng;
-  };
-
-  const currentLanguage = i18n.language || 'en';
-  const isRTL = currentLanguage === 'ar';
-
   return (
     <div className={`min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Mobile sidebar */}
       <div className={`relative z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-900/80" onClick={() => setSidebarOpen(false)} />
         
-        <div className={`fixed inset-y-0 ${isRTL ? 'right-0' : 'left-0'} z-50 w-72 overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 student-sidebar`}>
+        <div className={`fixed inset-y-0 ${isRTL ? 'right-0' : 'left-0'} z-50 w-72 overflow-y-auto bg-white px-4 py-4 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 student-sidebar`}>
           <div className={`flex items-center ${isRTL ? 'justify-start' : 'justify-between'}`}>
             <Link to="/student" className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
               <div className="text-2xl">🌟</div>
@@ -120,7 +117,7 @@ export default function StudentLayout({ children }) {
           </div>
           
           <nav className="mt-8">
-            <ul role="list" className="space-y-2">
+            <ul role="list" className="space-y-1">
               {navigation.map((item) => (
                 <li key={item.name}>
                   <Link
@@ -129,11 +126,11 @@ export default function StudentLayout({ children }) {
                       item.current
                         ? 'bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 border-2 border-blue-200'
                         : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50 border-2 border-transparent',
-                      'group flex gap-x-3 rounded-2xl p-4 text-lg font-semibold transition-all duration-200 transform hover:scale-105'
+                      'group flex gap-x-3 rounded-2xl p-3 text-sm font-semibold transition-all duration-200 transform hover:scale-105'
                     )}
                     onClick={() => setSidebarOpen(false)}
                   >
-                    <span className="text-2xl">{item.emoji}</span>
+                    <span className="text-xl">{item.emoji}</span>
                     <span className="flex-1">{item.name}</span>
                     {item.current && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
                   </Link>
@@ -143,23 +140,23 @@ export default function StudentLayout({ children }) {
           </nav>
           
           {/* User info and logout */}
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+          <div className="mt-4 pt-3 border-t border-gray-200">
+            <div className="flex items-center space-x-3 mb-2">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
                 {user?.name?.charAt(0)?.toUpperCase() || '👤'}
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-900">{user?.name || 'Student'}</p>
+                <p className="text-xs font-medium text-gray-900">{user?.name || 'Student'}</p>
                 <div className="flex items-center space-x-1">
                   <FireIcon className="h-4 w-4 text-orange-500" />
-                  <span className="text-xs text-gray-500">Level 5</span>
+                  <span className="text-xs text-gray-500">Lvl 5</span>
                 </div>
               </div>
             </div>
             
             <button
               onClick={handleLogout}
-              className="w-full flex items-center justify-center space-x-2 text-gray-600 hover:text-red-600 px-4 py-3 rounded-xl hover:bg-red-50 transition-colors duration-200 border-2 border-gray-200 hover:border-red-200"
+              className="w-full flex items-center justify-center space-x-2 text-gray-600 hover:text-red-600 px-3 py-2 rounded-xl hover:bg-red-50 transition-colors duration-200 border-2 border-gray-200 hover:border-red-200"
             >
               <ArrowLeftOnRectangleIcon className="h-5 w-5" />
               <span className="font-medium">{t('student.logout')}</span>
@@ -170,8 +167,8 @@ export default function StudentLayout({ children }) {
 
       {/* Desktop sidebar */}
       <div className={`hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col ${isRTL ? 'lg:right-0' : 'lg:left-0'}`}>
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 py-6 shadow-xl student-sidebar">
-          <div className={`flex items-center ${isRTL ? 'justify-start' : 'justify-between'}`}>
+        <div className="flex grow flex-col gap-y-3 overflow-y-auto bg-white px-4 py-4 shadow-xl student-sidebar">
+          <div className="flex flex-col space-y-3">
             <Link to="/student" className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
               <div className="text-3xl">🌟</div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -179,35 +176,23 @@ export default function StudentLayout({ children }) {
               </span>
             </Link>
 
-            {/* Language Switcher */}
-            <div className="flex items-center space-x-1 bg-gray-100 rounded-full p-1">
-              <button
-                onClick={() => changeLanguage('en')}
-                className={classNames(
-                  currentLanguage === 'en' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-blue-600',
-                  'px-2 py-1 rounded-full text-xs font-medium transition-all duration-200'
-                )}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => changeLanguage('fr')}
-                className={classNames(
-                  currentLanguage === 'fr' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-blue-600',
-                  'px-2 py-1 rounded-full text-xs font-medium transition-all duration-200'
-                )}
-              >
-                FR
-              </button>
-              <button
-                onClick={() => changeLanguage('ar')}
-                className={classNames(
-                  currentLanguage === 'ar' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-blue-600',
-                  'px-2 py-1 rounded-full text-xs font-medium transition-all duration-200'
-                )}
-              >
-                عر
-              </button>
+            {/* Language Switcher - Moved under app name */}
+            <div className="flex items-center space-x-1 bg-gray-100 rounded-full p-1 w-fit">
+              {displayLanguages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => changeDisplayLanguage(lang.code)}
+                  className={classNames(
+                    displayLanguage === lang.code ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-blue-600',
+                    'px-2 py-1 rounded-full text-xs font-medium transition-all duration-200'
+                  )}
+                >
+                  {lang.code === 'en' ? 'EN' :
+                   lang.code === 'fr' ? 'FR' :
+                   lang.code === 'ar' ? 'عر' :
+                   lang.code === 'tzm' ? 'ⵜⵎ' : lang.code.toUpperCase()}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -289,33 +274,21 @@ export default function StudentLayout({ children }) {
             
             {/* Mobile Language Switcher */}
             <div className="flex items-center space-x-1 bg-gray-100 rounded-full p-1">
-              <button
-                onClick={() => changeLanguage('en')}
-                className={classNames(
-                  currentLanguage === 'en' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600',
-                  'px-2 py-1 rounded-full text-xs font-medium'
-                )}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => changeLanguage('fr')}
-                className={classNames(
-                  currentLanguage === 'fr' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600',
-                  'px-2 py-1 rounded-full text-xs font-medium'
-                )}
-              >
-                FR
-              </button>
-              <button
-                onClick={() => changeLanguage('ar')}
-                className={classNames(
-                  currentLanguage === 'ar' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600',
-                  'px-2 py-1 rounded-full text-xs font-medium'
-                )}
-              >
-                عر
-              </button>
+              {displayLanguages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => changeDisplayLanguage(lang.code)}
+                  className={classNames(
+                    displayLanguage === lang.code ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600',
+                    'px-2 py-1 rounded-full text-xs font-medium'
+                  )}
+                >
+                  {lang.code === 'en' ? 'EN' :
+                   lang.code === 'fr' ? 'FR' :
+                   lang.code === 'ar' ? 'عر' :
+                   lang.code === 'tzm' ? 'ⵜⵎ' : lang.code.toUpperCase()}
+                </button>
+              ))}
             </div>
           </div>
         </div>

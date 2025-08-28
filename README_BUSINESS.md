@@ -11,7 +11,7 @@
 - **Assignment Submission**: Submit text-based assignments to teachers
 - **Progress Tracking**: Monitor learning progress and achievements
 - **Personalized Quests**: Gamified learning experiences with AI-generated content
-- **Multi-language Support**: Interface available in English, French, and Arabic
+- **Multi-language Support**: Interface available in English, French, Arabic, and Tamazight
 
 ### For Teachers (Premium Subscription - 189 DH/month)
 - **Class Management**: Create and manage multiple classes
@@ -78,7 +78,7 @@ Users (students/teachers)
 - **Interactive Exercises**: AI-generated practice sessions
 - **Writing Practice**: Text-based assignment submissions
 - **Progress Quests**: Gamified learning milestones
-- **Multilingual Interface**: Support for Arabic, English, French
+- **Multilingual Interface**: Support for Arabic, English, French, and Tamazight
 
 ### Classroom Management (Teachers)
 - **Assignment Creation**: Custom assignments with due dates

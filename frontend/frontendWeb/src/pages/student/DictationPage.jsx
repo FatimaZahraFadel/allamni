@@ -441,14 +441,14 @@ export default function DictationPage() {
           <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-orange-100 to-red-100 rounded-full px-6 py-3 mb-4 border-2 border-orange-200">
             <span className="text-2xl">🎧</span>
             <span className="text-lg font-bold text-orange-700">
-              Dictation Practice
+              {t('student.dictationPractice')}
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 bg-clip-text text-transparent mb-2">
-            Listen & Type Challenge
+            {t('student.listenAndTypeChallenge')}
           </h1>
           <p className="text-gray-600 text-lg mb-4">
-            Improve your listening skills with our dictation exercises!
+            {t('student.improveListeningSkills')}
           </p>
           <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 border-2 border-orange-200 max-w-md mx-auto">
             <div className="flex items-center justify-center space-x-2">

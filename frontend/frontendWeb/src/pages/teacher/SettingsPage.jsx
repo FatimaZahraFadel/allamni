@@ -206,6 +206,7 @@ export default function SettingsPage() {
                         <option value="en">English</option>
                         <option value="ar">Arabic</option>
                         <option value="fr">French</option>
+                        <option value="tzm">Tamazight (ⵜⴰⵎⴰⵣⵉⵖⵜ)</option>
                       </select>
                     </div>
                     <div className="flex justify-end pt-4">
@@ -318,6 +319,7 @@ export default function SettingsPage() {
                         <option value="en">English</option>
                         <option value="ar">العربية</option>
                         <option value="fr">Français</option>
+                        <option value="tzm">ⵜⴰⵎⴰⵣⵉⵖⵜ</option>
                       </select>
                     </div>
                     <div>

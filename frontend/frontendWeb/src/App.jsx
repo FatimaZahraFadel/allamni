@@ -6,6 +6,7 @@ import './i18n';
 // Context
 import { AuthProvider } from './contexts/AuthContext';
 import { AccessibilityProvider } from './contexts/AccessibilityContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -46,9 +47,10 @@ function App() {
   }, [i18n.language]);
 
   return (
-    <AccessibilityProvider>
-      <AuthProvider>
-        <Router>
+    <LanguageProvider>
+      <AccessibilityProvider>
+        <AuthProvider>
+          <Router>
           <div className="min-h-screen bg-white dark:bg-gray-900">
             <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -78,9 +80,10 @@ function App() {
             <Route path="/student/settings" element={<StudentSettingsPage />} />
             </Routes>
           </div>
-        </Router>
-      </AuthProvider>
-    </AccessibilityProvider>
+          </Router>
+        </AuthProvider>
+      </AccessibilityProvider>
+    </LanguageProvider>
   );
 }
 
